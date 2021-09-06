@@ -33,5 +33,8 @@ public class LoginTestCase extends BaseTestCase {
     @Title("Verify super admin can login successfully")
     public void loginAsSuperAdmin(){
         loginSteps.loginAsSuperAdmin();
+        loginSteps.superAdminLoginIsSuccessful();
     }
+
+
 }
