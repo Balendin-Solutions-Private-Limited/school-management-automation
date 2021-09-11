@@ -4,69 +4,69 @@ import in.balendin.schoolmanagment.util.DataGenerator;
 
 public class OrganizationData {
 
-    private String Org_Title;
-    private String Org_Description;
-    private String Org_Logo;
-    private String Org_Address1;
-    private String Org_Address2;
-    private String Org_Location;
-    private String Org_City;
-    private int Org_PostalCode;
-    private String Org_ContactName;
-    private String Org_ContactNumber;
+    private String org_Title;
+    private String org_Description;
+    private String org_Logo;
+    private String org_Address1;
+    private String org_Address2;
+    private String org_Location;
+    private String org_City;
+    private int org_PostalCode;
+    private String org_ContactName;
+    private String org_ContactNumber;
 
     private OrganizationData(String org_Title, String org_Description, String org_Logo, String org_Address1, String org_Address2,
                              String org_Location, String org_City, int org_PostalCode, String org_ContactName, String org_ContactNumber) {
-        this.Org_Title = org_Title;
-        this.Org_Description = org_Description;
-        this.Org_Logo = org_Logo;
-        this.Org_Address1 = org_Address1;
-        this.Org_Address2 = org_Address2;
-        this.Org_Location = org_Location;
-        this.Org_City = org_City;
-        this.Org_PostalCode = org_PostalCode;
-        this.Org_ContactName = org_ContactName;
-        this.Org_ContactNumber = org_ContactNumber;
+        this.org_Title = org_Title;
+        this.org_Description = org_Description;
+        this.org_Logo = org_Logo;
+        this.org_Address1 = org_Address1;
+        this.org_Address2 = org_Address2;
+        this.org_Location = org_Location;
+        this.org_City = org_City;
+        this.org_PostalCode = org_PostalCode;
+        this.org_ContactName = org_ContactName;
+        this.org_ContactNumber = org_ContactNumber;
     }
 
     public String getOrg_Title() {
-        return Org_Title;
+        return org_Title;
     }
 
     public String getOrg_Description() {
-        return Org_Description;
+        return org_Description;
     }
 
     public String getOrg_Logo() {
-        return Org_Logo;
+        return org_Logo;
     }
 
     public String getOrg_Address1() {
-        return Org_Address1;
+        return org_Address1;
     }
 
     public String getOrg_Address2() {
-        return Org_Address2;
+        return org_Address2;
     }
 
     public String getOrg_Location() {
-        return Org_Location;
+        return org_Location;
     }
 
     public String getOrg_City() {
-        return Org_City;
+        return org_City;
     }
 
     public int getOrg_PostalCode() {
-        return Org_PostalCode;
+        return org_PostalCode;
     }
 
     public String getOrg_ContactName() {
-        return Org_ContactName;
+        return org_ContactName;
     }
 
     public String getOrg_ContactNumber() {
-        return Org_ContactNumber;
+        return org_ContactNumber;
     }
 
     public OrganizationData() {

@@ -31,27 +31,24 @@ public class AddOrganizationTestCase extends BaseTestCase {
 
     @Test()
     @Title("verify super admin can create Organization Successfully")
-    public void T1_addOrganization() {
-
+    public void addOrganization() {
         organizationSteps.navigateToOrganizationForm();
         organizationSteps.createOrganization();
         organizationSteps.verifyOrganizationCreate();
-
     }
 
     @Test
     @Title("verify super admin can create Organization Without Mandatory Fields")
-    public void T2_addOrganizationWithoutMandatoryFields() {
+    public void addOrganizationWithoutMandatoryFields() {
         organizationSteps.navigateToOrganizationForm();
         organizationSteps.verifyOrganizationCreateWithoutMandatoryFields();
-
     }
 
     @Test
     @Title("verify Organization page Postal and contact number validations")
-    public void T3_addOrganizationValidations() {
+    public void addOrganizationValidations() {
         organizationSteps.navigateToOrganizationForm();
-        organizationSteps.verifyFields();
+        organizationSteps.verifyPostalCode_PhoneNumberFields();
 
     }
 }

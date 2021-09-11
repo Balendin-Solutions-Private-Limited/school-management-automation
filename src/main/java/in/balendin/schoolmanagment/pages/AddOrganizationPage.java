@@ -9,10 +9,13 @@ import org.openqa.selenium.support.FindBy;
 
 public class AddOrganizationPage extends PageObject {
 
-    @FindBy(xpath = "/html/body/div/aside/div/nav/ul/li[1]/ul/li[3]/a")
+    @FindBy(xpath = "/html/body/div/aside/div/nav/ul/li[2]/a    ")
+    private WebElementFacade tab_Admin;
+
+    @FindBy(xpath = "//a[@href='/Organization']")
     private WebElementFacade subTab_Organization;
 
-    @FindBy(xpath = "/html/body/div/div[1]/section[2]/div/div/div[1]/div/a")
+    @FindBy(xpath = "//a[normalize-space()='Add']")
     private WebElementFacade btn_AddOrganization;
 
     // Form Elements
@@ -50,8 +53,7 @@ public class AddOrganizationPage extends PageObject {
     private WebElementFacade btn_Submit;
 
     // Popup elements
-
-    @FindBy(xpath = "/html/body/div[2]/div/div[3]/button[1]")
+    @FindBy(xpath = "//button[normalize-space()='OK']")
     private WebElementFacade btn_OK;
 
     // Validation messages elements
@@ -62,7 +64,7 @@ public class AddOrganizationPage extends PageObject {
     private WebElementFacade address1_Validation;
 
     @FindBy(id = "Location-error")
-    private WebElementFacade loaction_Validation;
+    private WebElementFacade location_Validation;
 
     @FindBy(id = "City-error")
     private WebElementFacade city_Validation;
@@ -77,7 +79,6 @@ public class AddOrganizationPage extends PageObject {
     private WebElementFacade postalCode_Validation;
 
     // Sort and Search elements
-
     @FindBy(xpath = "//*[@id=\"OrganizationList_filter\"]/label/input")
     private WebElementFacade search_Field;
 
@@ -97,13 +98,13 @@ public class AddOrganizationPage extends PageObject {
 
 
     public void navigateToAddOrganizationForm() {
-        //  tab_Admin.click();
-        subTab_Organization.click();
-        btn_AddOrganization.click();
+       tab_Admin.sendKeys(Keys.ENTER);
+        clickOn(subTab_Organization);
+        clickOn(btn_AddOrganization);
     }
 
     public void navigateToOrgList() {
-        //   tab_Admin.click();
+        tab_Admin.click();
         subTab_Organization.click();
     }
 
@@ -111,7 +112,7 @@ public class AddOrganizationPage extends PageObject {
                                  String location, String city, int postalCode, String contactName, String contactNumber) {
         typeInto(organization_Name, Org_Name);
         typeInto(organization_Description, org_Description);
-        //  send(organization_Logo, logo);
+       organization_Logo.sendKeys(logo);
         typeInto(Address_line1, address1);
         typeInto(Address_line2, address2);
         typeInto(Location, location);
@@ -123,11 +124,9 @@ public class AddOrganizationPage extends PageObject {
 
     }
 
-    public void CreateOrganization() {
-
+    public void createOrganization() {
         data = new OrganizationData().generateOrgDetails();
-
-        organizationPage(data.getOrg_Title(), data.getOrg_Description(), "", data.getOrg_Address1(), data.getOrg_Address2(),
+        organizationPage(data.getOrg_Title(), data.getOrg_Description(), data.getOrg_Logo(), data.getOrg_Address1(), data.getOrg_Address2(),
                 data.getOrg_Location(), data.getOrg_City(), data.getOrg_PostalCode(), data.getOrg_ContactName(), data.getOrg_ContactNumber());
     }
 
@@ -136,26 +135,18 @@ public class AddOrganizationPage extends PageObject {
         btn_OK.click();
     }
 
-    public void CreateOrganizationNonMandatoryFields() {
-
-
+    public void createOrganizationNonMandatoryFields() {
         btn_Submit.sendKeys(Keys.ENTER);
-
         Assert.assertTrue(name_Validation.isDisplayed());
-
         Assert.assertTrue(address1_Validation.isDisplayed());
-
-        Assert.assertTrue(loaction_Validation.isDisplayed());
-
+        Assert.assertTrue(location_Validation.isDisplayed());
         Assert.assertTrue(city_Validation.isDisplayed());
-
         Assert.assertTrue(contactName_Validation.isDisplayed());
-
         Assert.assertTrue(contactNumber_Validation.isDisplayed());
 
     }
 
-    public void verifyFields() {
+    public void verifyPostalCode_PhoneNumberFields() {
 
         postal_Code.typeAndTab(".><dsg?./");
         String actualMsgOnlyDigits = postalCode_Validation.getText();
