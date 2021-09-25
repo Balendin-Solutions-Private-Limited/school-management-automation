@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.*;
@@ -15,16 +16,13 @@ import java.util.stream.Collectors;
 
 public class OrganizationPage extends PageObject {
 
-/*    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-    Date date = new Date();*/
-
-    @FindBy(xpath = "/html/body/div/aside/div/nav/ul/li[2]")
+    @FindBy(xpath = "//body/div[1]/aside[1]/div[1]/nav[1]/ul[1]/li[2]")
     private WebElement adminTab;
 
-    @FindBy(xpath = "/html/body/div/aside/div/nav/ul/li[2]/ul/li[2]")
+    @FindBy(xpath = "//body/div[1]/aside[1]/div[1]/nav[1]/ul[1]/li[2]/ul[1]/li[2]")
     private WebElement organizationTab;
 
-    @FindBy(xpath = "/html/body/div/div[1]/section[2]/div/div/div[1]/div")
+    @FindBy(xpath = "//body/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[1]")
     private WebElement addBtn;
 
     @FindBy(id = "goBackHref")
@@ -33,15 +31,15 @@ public class OrganizationPage extends PageObject {
     @FindBy(xpath = "//tr//th[1]")
     private WebElement serialColumn ;
 
-    @FindBy(xpath = "table[@id='OrganizationList']/tbody/tr/td[1]")
-    private List<WebElement>serialList;
+    @FindBy(xpath = "//table[@id='OrganizationList']/tbody/tr/td[1]")
+    private List<WebElement> serialList;
 
 
     @FindBy(xpath = "//label//input")
     private WebElement txtSearchBox;
 
-    @FindBy(xpath = "//tr//td[3]")
-    private List<WebElement>organizationList;
+    @FindBy(xpath = "//table[@id='OrganizationList']/tbody/tr/td[3]")
+    private List<WebElementFacade>organizationList;
 
     @FindBy(id = "Name")
     private WebElement txtOrganizationName;
@@ -64,7 +62,7 @@ public class OrganizationPage extends PageObject {
     @FindBy(xpath = "//body/div[1]/div[1]/section[2]/div[1]/div[1]/form[1]/div[2]/input[1]")
     private WebElementFacade btnSubmit;
 
-    @FindBy(xpath = "/html/body/div[2]/div/div[3]/button[1]")
+    @FindBy(xpath = "//button[contains(text(),'OK')]")
     private WebElement btnOk;
 
     @FindBy(name = "OrganizationList_length")
@@ -87,10 +85,12 @@ public class OrganizationPage extends PageObject {
     @FindBy(className = "btnDelete")
     private WebElement btnDelete;
 
-    @FindBy(xpath = "/html/body/div[2]/div/div[3]/button[1]")
-            private WebElement btnYesDeleteIt;
+    @FindBy(xpath = "//button[contains(text(),'Yes, delete it!')]")
+    private WebElement btnYesDeleteIt;
 
-
+    //Confirmation popup
+    @FindBy(xpath = "//div[@id='swal2-content']")
+    private WebElement actualMsg;
 
 
     public void navigateToOrganizationForm(){
@@ -98,23 +98,43 @@ public class OrganizationPage extends PageObject {
         clickOn(organizationTab);
         clickOn(addBtn);
     }
-    public void setOrganizationData(String organizationName, String address, String location, String city, String contactName, String contactNumber){
-//      String currentDate = dateFormat.format(date);
-        typeInto(txtOrganizationName, organizationName );
-        typeInto(txtAddressLine1, address);
-        typeInto(txtLocation, location);
-        typeInto(txtCity,city);
-        typeInto(txtContactName,contactName);
-        typeInto(txtContactNumber,contactNumber);
+    OrganizationData organizationData;
+    GenerateData generateData = new GenerateData();
+    public void createOrganization(){
+        organizationData = new OrganizationData().getData();
+        typeInto(txtOrganizationName,organizationData.getOrganizationName() + "auto_" + generateData.getRandomString() );
+        typeInto(txtAddressLine1, organizationData.getAddress());
+        typeInto(txtLocation, organizationData.getLocation());
+        typeInto(txtCity,organizationData.getCity());
+        typeInto(txtContactName,organizationData.getContactName());
+        typeInto(txtContactNumber,organizationData.getContactNumber());
         btnSubmit.sendKeys(Keys.ENTER);
+        String expectedMsg = "The organization was saved successfully!";
+        waitFor(actualMsg);
+        actualMsg.getText();
+        System.out.println("CreateOrgName" +organizationData.getOrganizationName());
+        Assert.assertEquals(expectedMsg,actualMsg.getText());
+        System.out.println("Actual msg == " + actualMsg.getText());
         clickOn(btnOk);
     }
-    public void createOrganization(){
-        OrganizationData organizationData = new OrganizationData().getData();
-        GenerateData generateData = new GenerateData();
-        setOrganizationData(organizationData.getOrganizationName() + "auto_" + generateData.getRandomString(),organizationData.getAddress(),organizationData.getLocation(),organizationData.getCity(),organizationData.getContactName(),organizationData.getContactNumber());
-        System.out.println("11111" +organizationData.getOrganizationName() );
+    public void searchOrganization(){
+        typeInto(txtSearchBox, organizationData.getOrganizationName());
+        System.out.println("DeleteOrgName" +organizationData.getOrganizationName());
+        List<WebElement> filterOrganizationList = organizationList.stream().filter(orgName -> orgName.getText().contains(organizationData.getOrganizationName())).collect(Collectors.toList());
+        System.out.println("OrgListSize " + organizationList.size());
+        System.out.println("FilterOrgList " + filterOrganizationList.size());
+        Assert.assertEquals(organizationList.size(),filterOrganizationList.size());
     }
+    public void deleteOrganization(){
+        btnDelete.click();
+        btnYesDeleteIt.click();
+        String expMsg = "The organization has been deleted successfully.";
+        waitFor(actualMsg);
+        Assert.assertEquals(expMsg,actualMsg.getText());
+        System.out.println(" Delete Actual msg ==" + actualMsg.getText());
+        clickOn(btnOk);
+    }
+
     public void navigateToOrganizationList(){
         clickOn(adminTab);
         clickOn(organizationTab);
@@ -126,77 +146,30 @@ public class OrganizationPage extends PageObject {
 
     public void doSerialNumberSorting(){
         navigateToOrganizationList();
-        List<String> originalList = serialList.stream().map(s ->s.getText()).collect(Collectors.toList());
-        serialColumn.click();
+        List<String> originalSerialList = serialList.stream().map(WebElement::getText).collect(Collectors.toList());
+        System.out.println(originalSerialList);
+        Actions actions = new Actions(getDriver());
+       actions.doubleClick(serialColumn).perform();
         waitFor(5);
-        List<String> sortedList = serialList.stream().map(s ->s.getText()).collect(Collectors.toList());
-        Collections.reverse(sortedList);
-        System.out.println("Sorted List " + sortedList);
-        Assert.assertTrue(originalList.equals(sortedList));
+        List<String> sortedSerialList = serialList.stream().map(WebElement::getText).collect(Collectors.toList());
+        System.out.println(sortedSerialList);
+        Assert.assertTrue(originalSerialList.equals(sortedSerialList));
     }
-    public void searchOrganizationName(){
-        navigateToOrganizationList();
-        String organizationName = getDriver().findElement(By.xpath("//tr[1]//td[3]")).getText();
-        typeInto(txtSearchBox,organizationName);
-        System.out.println("22222" +organizationName);
-        List<WebElement>organizationNameList = getDriver().findElements(By.xpath("//tr[1]//td[3]"));
-        List<WebElement>filterList = organizationNameList.stream().filter(orgList ->orgList.getText().contains(organizationName)).collect(Collectors.toList());
-        Assert.assertEquals(organizationNameList.size(),filterList.size());
-    }
-    public void deleteOrganization(){
-        navigateToOrganizationList();
-        String organizationName = getDriver().findElement(By.xpath("//tr[1]//td[3]")).getText();
-        typeInto(txtSearchBox,organizationName);
-        System.out.println("22222" +organizationName);
-        List<WebElement>organizationNameList = getDriver().findElements(By.xpath("//tr[1]//td[3]"));
-        List<WebElement>filterList = organizationNameList.stream().filter(orgList ->orgList.getText().contains(organizationName)).collect(Collectors.toList());
-        Assert.assertEquals(organizationNameList.size(),filterList.size());
-        btnDelete.click();
-        btnYesDeleteIt.click();
 
-    }
-    public void see10Entries(){
-        navigateToOrganizationList();
+    public void seeSelectedEntriesCount() {
+    navigateToOrganizationList();
+    clickOn(showEntriesDropdown);
+    List<WebElement> showEntriesDropdownOptions = getDriver().findElements(By.xpath("//select/option")).stream().collect(Collectors.toList());
+    String entryCountOptions;
+    for (WebElement element : showEntriesDropdownOptions) {
+        entryCountOptions = element.getText();
+        element.click();
+        List<WebElement> serialNumberListSize = getDriver().findElements(net.serenitybdd.core.annotations.findby.By.xpath("//table[@id='OrganizationList']/tbody/tr/td[1]"));
+        int entryCountOptionsSize = Integer.parseInt(entryCountOptions);
+        Assert.assertTrue(serialNumberListSize.size() <= entryCountOptionsSize);
+        System.out.println("  OrgListValue : "   + serialNumberListSize.size());
+        System.out.println("  Serial Number count     : "   + entryCountOptionsSize);
         clickOn(showEntriesDropdown);
-        clickOn(showEntries10);
-        List<WebElement> serialNumberList = getDriver().findElements(By.xpath("//table[@id='OrganizationList']/tbody/tr/td[1]"));
-        System.out.println( "serialNumberList " + serialNumberList.size());
-        String num = showEntries10.getValue();
-        int serialNumber = Integer.parseInt(num);
-        Assert.assertTrue(serialNumber >= serialNumberList.size() || serialNumberList.size() <= serialNumber);
     }
-    public void see25Entries(){
-        navigateToOrganizationList();
-        clickOn(showEntriesDropdown);
-        clickOn(showEntries25);
-        List<WebElement> serialNumberList = getDriver().findElements(By.xpath("//table[@id='OrganizationList']/tbody/tr/td[1]"));
-        System.out.println( "serialNumberList " + serialNumberList.size());
-        String num = showEntries25.getValue();
-        int serialNumber = Integer.parseInt(num);
-        Assert.assertTrue(serialNumberList.size() <= serialNumber);
-    }
-
-    public void see50Entries(){
-        navigateToOrganizationList();
-        clickOn(showEntriesDropdown);
-        clickOn(showEntries50);
-        List<WebElement> serialNumberList = getDriver().findElements(By.xpath("//table[@id='OrganizationList']/tbody/tr/td[1]"));
-        System.out.println("SerialNumberList" + serialNumberList.size());
-        String num = showEntries50.getValue();
-        int serialNumber = Integer.parseInt(num);
-        Assert.assertTrue(serialNumberList.size() <= serialNumber);
-    }
-    public void see100Entries(){
-        navigateToOrganizationList();
-        clickOn(showEntriesDropdown);
-        clickOn(showEntries100);
-        List<WebElement> serialNumberList = getDriver().findElements(By.xpath("//table[@id='OrganizationList']/tbody/tr/td[1]"));
-        System.out.println("SerialNumberList" + serialNumberList.size());
-        String num = showEntries50.getValue();
-        int serialNumber = Integer.parseInt(num);
-        Assert.assertTrue(serialNumberList.size() <= serialNumber || serialNumberList.size() >= serialNumber);
-
-    }
-
-
+}
 }

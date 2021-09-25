@@ -15,10 +15,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 @Narrative(text = {"As a super admin",
-"I want to be able to redirect organizationList when super admin clicks on GoBack button"})
+        "I want to be able to redirect organizationList when super admin clicks on GoBack button"})
 @RunWith(SerenityRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@WithTagValuesOf({"organization","regression"})
+@WithTagValuesOf({"organization"})
 public class OrganizationTestCase extends BaseTestCase {
 
     @Steps
@@ -28,63 +28,38 @@ public class OrganizationTestCase extends BaseTestCase {
     OrganizationSteps organizationSteps;
 
     @Before
-    public void loginAsSuperAdmin(){
+    public void loginAsSuperAdmin() {
         loginSteps.navigateToApplication();
         loginSteps.loginAsSuperAdmin();
     }
     @Test
-    @Title("Verify super admin can create organization with mandatory fields")
-    public void superAdminIsCreateOrganization(){
-        organizationSteps.createOrganization();
-    }
-    @Test
     @Title("Verify super admin can able to see organization list ")
-    public void superAdminIsSeeOrganizationList(){
+    public void superAdminIsSeeOrganizationList() {
         organizationSteps.superAdminIsRedirectSuccessfulOnOrganizationList();
     }
     @Test
-    @Title("Verify super admin can able to search organization name")
-    public void verifySuperAdminIsAbleToSearchOrganizationName(){
-        organizationSteps.superAdminIsAbleToSearchOrganizationName();
-    }
-    @Test
-    @Title("Verify super admin can able to delete organization")
-    public void verifySuperAdminIsAbleToDeleteOrganization(){
-        organizationSteps.superAdminIsAbleToDeleteOrganization();
+    @WithTagValuesOf("regression")
+    @Title( "Verify super admin are able to deleted organization")
+    public void verifySuperAdminIsAbleToSearchOrganizationName() {
+        organizationSteps.verifySuperAdminIsAbleToCreateOrganization();
+        organizationSteps.searchOrganization();
+        organizationSteps.verifySuperAdminIsAbleToDeleteOrganization();
     }
     @Test
     @Title("Verify super admin can redirect to organization list when click on GoBack button")
-    public void redirectToOrganizationList(){
+    public void redirectToOrganizationList() {
         organizationSteps.redirectToOrganizationList();
-
     }
-
     @Test
     @Title("Verify super admin can able to sort serial number")
-    public void verifySuperAdminIsAbleToSortSerialNumber(){
+    public void verifySuperAdminIsAbleToSortSerialNumber() {
         organizationSteps.superAdminIsAbleToSortSerialNumber();
     }
 
     @Test
-    @Title("Verify super admin can able to see 10 serial entries in serial list")
-    public void verifySuperAdminIsAbleToSee10SerialList(){
-        organizationSteps.superAdminIsAbleToSee10Entries();
+    @WithTagValuesOf("pageDropdown")
+    @Title("Verify super admin can able to see selected entry option in page show entries dropdown")
+    public void verifySuperAdminIsAbleToSeeSelectedEntryCount() {
+        organizationSteps.superAdminIsAbleToSeeSelectedEntryCount();
     }
-
-    @Test
-    @Title("Verify super admin can able to see 25 serial entries in serial list")
-    public void verifySuperAdminIsAbleToSee25SerialList(){
-        organizationSteps.superAdminIsAbleToSee25Entries();
-    }
-        @Test
-        @Title("Verify super admin can able to see 50 serial entries in serial list")
-        public void verifySuperAdminIsAbleToSee50SerialList(){
-            organizationSteps.superAdminIsAbleToSee50Entries();
-        }
-    @Test
-    @Title("Verify super admin can able to see 100 and greater than 100 serial entries in serial list")
-    public void verifySuperAdminIsAbleToSee100SerialList(){
-        organizationSteps.superAdminIsAbleToSee100Entries();
-    }
-
 }

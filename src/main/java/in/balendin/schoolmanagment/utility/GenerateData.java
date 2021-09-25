@@ -1,7 +1,6 @@
 package in.balendin.schoolmanagment.utility;
 
 import com.github.javafaker.Faker;
-import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.Random;
@@ -28,8 +27,6 @@ public class GenerateData  {
 
     public String getContactName() {
         String name = faker.name().firstName();
-        System.out.println("Contact Name " + name);
-//        return faker.name().firstName();
         return name;
     }
 
@@ -49,8 +46,6 @@ public class GenerateData  {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-
-        System.out.println(generatedString);
         return generatedString;
     }
 }
