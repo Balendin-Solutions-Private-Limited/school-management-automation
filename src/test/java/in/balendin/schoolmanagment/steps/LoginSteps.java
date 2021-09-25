@@ -4,6 +4,8 @@ import in.balendin.schoolmanagment.pages.LoginPage;
 import net.thucydides.core.annotations.Step;
 import org.junit.Assert;
 
+import static net.serenitybdd.core.Serenity.getDriver;
+
 public class LoginSteps {
 
     LoginPage loginPage;
@@ -15,12 +17,12 @@ public class LoginSteps {
 
     @Step("Navigate to application")
     public void navigateToApplication(){
-        loginPage.getDriver().manage().window().maximize();
+      getDriver().manage().window().maximize();
         loginPage.open();
     }
 
-    @Step("Verify superadmin has logged in successfully")
-    public void superadminLoginIsSuccessful(){
+    @Step("Verify super admin has logged in successfully")
+    public void superAdminLoginIsSuccessful(){
         Assert.assertTrue(loginPage.getTitle().equals("Super Admin Dashboard"));
     }
 }

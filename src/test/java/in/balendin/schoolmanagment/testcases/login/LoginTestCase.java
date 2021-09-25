@@ -7,7 +7,6 @@ import net.thucydides.core.annotations.Narrative;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.Title;
 import net.thucydides.core.annotations.WithTagValuesOf;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -33,5 +32,8 @@ public class LoginTestCase extends BaseTestCase {
     @Title("Verify super admin can login successfully")
     public void loginAsSuperAdmin(){
         loginSteps.loginAsSuperAdmin();
+        loginSteps.superAdminLoginIsSuccessful();
     }
+
+
 }
