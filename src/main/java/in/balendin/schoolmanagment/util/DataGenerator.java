@@ -30,7 +30,7 @@ public class DataGenerator {
     }
 
     public String getOrg_Address2() {
-        return faker.address().secondaryAddress();
+        return faker.address().streetAddress();
     }
 
     public String getOrg_Location() {
@@ -54,6 +54,11 @@ public class DataGenerator {
     }
 
     public int generatePostalCode() {
+        int min = 100000;
+        int max = 999999;
+        return (int) (Math.random() * (max - min + 1) + min);
+    }
+    public int randomNumber() {
         int min = 100000;
         int max = 999999;
         return (int) (Math.random() * (max - min + 1) + min);
