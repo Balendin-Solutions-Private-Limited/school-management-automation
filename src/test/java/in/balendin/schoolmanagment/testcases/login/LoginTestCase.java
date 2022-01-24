@@ -1,5 +1,6 @@
 package in.balendin.schoolmanagment.testcases.login;
 
+import in.balendin.schoolmanagment.steps.AddOrganizationSteps;
 import in.balendin.schoolmanagment.steps.LoginSteps;
 import in.balendin.schoolmanagment.testcases.basetest.BaseTestCase;
 import net.serenitybdd.junit.runners.SerenityRunner;
@@ -18,20 +19,21 @@ import org.junit.runners.MethodSorters;
         "I want to be able to be able to login successfully to the application"})
 @RunWith(SerenityRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@WithTagValuesOf({"login","regression"})
+@WithTagValuesOf({"login", "regression"})
 public class LoginTestCase extends BaseTestCase {
 
     @Steps
     LoginSteps loginSteps;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         loginSteps.navigateToApplication();
     }
 
     @Test
     @Title("Verify super admin can login successfully")
-    public void loginAsSuperAdmin(){
+    public void loginAsSuperAdmin() {
         loginSteps.loginAsSuperAdmin();
+        loginSteps.superadminLoginIsSuccessful();
     }
 }
