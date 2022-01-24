@@ -33,14 +33,24 @@ public class OrganizationSteps {
         Assert.assertTrue(organizationPage.getTitle().equals("Organization List"));
     }
 
-    @Step("Verify super admin are able to sort serial number")
-    public void superAdminIsAbleToSortSerialNumber() {
-        organizationPage.doSerialNumberSorting();
+    @Step("Verify super admin are able to sort serial number in ascending ")
+    public void SortSerialNumberAscending() {
+        organizationPage.doSerialNumberSortingAscending();
+    }
+    @Step("Verify super admin are able to sort serial number in descending")
+    public void SortSerialNumberDescending() {
+        organizationPage.doSerialNumberDescending();
     }
 
     @Step("Verify super admin are able to see selected number of entries like 10,25,50,100")
     public void superAdminIsAbleToSeeSelectedEntryCount() {
         organizationPage.seeSelectedEntriesCount();
+    }
+
+    @Step("Verify super admin are able to create organization with school")
+        public void superAdminIsAbleToCreateOrganizationWithSchool(){
+        organizationPage.navigateToOrganizationForm();
+        organizationPage.createOrganizationWithSchool();
     }
 
 }

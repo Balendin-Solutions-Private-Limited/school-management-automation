@@ -51,9 +51,10 @@ public class OrganizationTestCase extends BaseTestCase {
         organizationSteps.redirectToOrganizationList();
     }
     @Test
-    @Title("Verify super admin can able to sort serial number")
-    public void verifySuperAdminIsAbleToSortSerialNumber() {
-        organizationSteps.superAdminIsAbleToSortSerialNumber();
+    @Title("Verify super admin can able to sort serial number in ascending and descending order")
+    public void verifySuperAdminIsAbleToSortSerialNumberAscendingDescending() {
+        organizationSteps.SortSerialNumberAscending();
+        organizationSteps.SortSerialNumberDescending();
     }
 
     @Test
@@ -61,5 +62,10 @@ public class OrganizationTestCase extends BaseTestCase {
     @Title("Verify super admin can able to see selected entry option in page show entries dropdown")
     public void verifySuperAdminIsAbleToSeeSelectedEntryCount() {
         organizationSteps.superAdminIsAbleToSeeSelectedEntryCount();
+    }
+    @Test
+    @Title("Verify super admin is able to create organization with school")
+    public void verifySuperAdminIsAbleToCreateOrganizationWithSchool(){
+        organizationSteps.superAdminIsAbleToCreateOrganizationWithSchool();
     }
 }
