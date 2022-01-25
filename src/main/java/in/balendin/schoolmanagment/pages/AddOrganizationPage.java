@@ -7,11 +7,15 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static in.balendin.schoolmanagment.constants.Constants.ORG_LOGO;
 
@@ -47,6 +51,9 @@ public class AddOrganizationPage extends PageObject {
 
     @FindBy(xpath = "//a[normalize-space()='LogOut']")
     private WebElementFacade labelLogout;
+
+    @FindBy(id = "swal2-content")
+    private WebElement actualMsg;
 
 
     // Form Elements
@@ -85,6 +92,9 @@ public class AddOrganizationPage extends PageObject {
 
     @FindBy(xpath = "//input[@value='Submit']")
     private WebElementFacade btn_Submit_Update;
+
+    @FindBy(xpath = "//td[@class=\"sorting_1\"]")
+    private List<WebElement> serialList;
 
     // Popup elements
     @FindBy(xpath = "//button[normalize-space()='OK']")
@@ -154,6 +164,23 @@ public class AddOrganizationPage extends PageObject {
     @FindBy(xpath = "//*[@id=\"modal-10118\"]/div/div/div[3]/button")
     private WebElementFacade closeAddressPopup_2;
 
+    @FindBy(xpath = "//th[contains(text(),'Sr. No.')]")
+    private WebElement serialColumn ;
+
+    @FindBy(css = "button[class='swal2-confirm swal2-styled']")
+    private WebElementFacade btnConfirmDelete;
+
+    @FindBy(id = "goBackHref")
+    private WebElement goBackBtn;
+
+    @FindBy(xpath = "//table[@id='OrganizationList']/tbody/tr/td[6]/button[@class='btn btn-danger btn-sm btnDelete ']")
+    private WebElement btnDelete;
+
+    @FindBy(xpath = "//table[@id='OrganizationList']/tbody/tr/td[2]")
+    private List<WebElementFacade>organizationList;
+
+    @FindBy(name = "OrganizationList_length")
+    private WebElement showEntriesDropdown;
 
     private OrganizationData data;
     private WebDriverWait wait;
@@ -167,6 +194,9 @@ public class AddOrganizationPage extends PageObject {
     public void navigateToOrgList() {
         tab_Admin.click();
         subTab_Organization.click();
+        String Title = getTitle();
+        System.out.println(" Text : " + Title);
+        Assert.assertTrue(Title.contains("Organization List"));
     }
 
 
@@ -175,12 +205,18 @@ public class AddOrganizationPage extends PageObject {
             data = new OrganizationData().generateOrgDetails();
             organizationPage(true, data.getOrg_Title(), data.getOrg_Description(), data.getOrg_Logo(), data.getOrg_Address1(), data.getOrg_Address2(),
                     data.getOrg_Location(), data.getOrg_City(), data.getOrg_PostalCode(), data.getOrg_ContactName(), data.getOrg_ContactNumber());
+            waitForElement(btn_Submit);
+            clickOn(btn_Submit);
+            clickOn(btn_OK);
         } else {
             data = new OrganizationData().generateOrgDetails();
             organizationPage(data.getOrg_Title(), data.getOrg_Description(), data.getOrg_Logo(), data.getOrg_Address1(), data.getOrg_Address2(),
                     data.getOrg_Location(), data.getOrg_City(), data.getOrg_PostalCode(), data.getOrg_ContactName(), data.getOrg_ContactNumber());
+            waitForElement(btn_Submit);
+            clickOn(btn_Submit);
+            clickOn(btn_OK);
         }
-        clickOn(btn_Submit);
+
 
 
     }
@@ -202,8 +238,7 @@ public class AddOrganizationPage extends PageObject {
     }
 
     public void verifyOrganizationAndSchoolCreated() {
-        waitForElement(btn_OK);
-        btn_OK.click();
+
         getDriver().findElement(By.xpath("//tr[1]/td[2]")).getText().equals(data.getOrg_Title());
         navigateSchoolList();
     }
@@ -213,7 +248,7 @@ public class AddOrganizationPage extends PageObject {
         getDriver().findElement(By.xpath("//tr[1]/td[3]")).getText().equals(data.getOrg_Title());
     }
     public void verifyOrganizationCreated() {
-        btn_OK.waitUntilClickable();
+        waitForElement(btn_OK);
         btn_OK.click();
     }
 
@@ -258,6 +293,7 @@ public class AddOrganizationPage extends PageObject {
         data = new OrganizationData().generateOrgDetails();
         organizationPage(data.getOrg_Title(), data.getOrg_Description(), "", data.getOrg_Address1(), data.getOrg_Address2(),
                 data.getOrg_Location(), data.getOrg_City(), data.getOrg_PostalCode(), data.getOrg_ContactName(), data.getOrg_ContactNumber());
+        waitForElement(btn_Submit_Update);
         clickOn(btn_Submit_Update);
     }
 
@@ -301,18 +337,6 @@ public class AddOrganizationPage extends PageObject {
         String orgListXpath = "//tr/td[3]";
         generalClass.sortNameDescending(OrgNameHeader, orgListXpath);
 
-    }
-
-    public void deleteOrganization() {
-        WebElement deleteOrg = getDriver().findElement(By.xpath("//td[text()='" + OrgName.getText() + "']/parent::*/child::td[6]/button"));
-        waitForElement(deleteOrg);
-        clickOn(deleteOrg);
-        String Name = getDriver().findElement(By.xpath("//div[@id='swal2-content' and @class='swal2-html-container'] ")).getText();
-        System.out.println("KKKKKKKKKKKKKKcc" + Name);
-        waitForElement(btn_YesDelete_Me);
-        clickOn(btn_YesDelete_Me);
-        String Name1 = getDriver().findElement(By.xpath("//div[@id='swal2-content' and @class='swal2-html-container'] ")).getText();
-        System.out.println("KKKKKKKKKKKKKKcc" + Name1);
     }
 
     public void verifyOrganizationAddressPageAndClosePage() {
@@ -366,9 +390,77 @@ public class AddOrganizationPage extends PageObject {
     public void VerifyContactNameAndNumberFields() {
         contact_Name.isDisplayed();
         contact_Number.isDisplayed();
+        waitForElement(btn_Submit);
         clickOn(btn_Submit);
         Assert.assertTrue(contactName_Validation.isDisplayed());
         Assert.assertTrue(contactNumber_Validation.isDisplayed());
 
     }
+
+    public void searchOrganization(){
+        typeInto(search_Field, data.getOrg_Title());
+        System.out.println("DeleteOrgName" +data.getOrg_Title());
+        List<WebElement> filterOrganizationList = organizationList.stream().filter(orgName -> orgName.getText().contains(data.getOrg_Title())).collect(Collectors.toList());
+        System.out.println("OrgListSize " + organizationList.size());
+        System.out.println("FilterOrgList " + filterOrganizationList.size());
+        Assert.assertEquals(organizationList.size(),filterOrganizationList.size());
+    }
+    public void deleteOrganization(){
+        btnDelete.click();
+        btn_YesDelete_Me.click();
+        String expMsg = "The organization has been deleted successfully.!";
+        waitFor(actualMsg);
+        Assert.assertEquals(expMsg,actualMsg.getText());
+        System.out.println(" Delete Actual msg ==" + actualMsg.getText());
+        clickOn(btn_OK);
+    }
+    public void redirectToOrganizationList(){
+        navigateToAddOrganizationForm();
+        clickOn(goBackBtn);
+    }
+
+    public void doSerialNumberDescending(){
+        getDriver().navigate().refresh();
+        serialColumn.click();
+        List<String> stringDescendingList = serialList.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<Integer> integerDescendingList = stringDescendingList.stream().map(Integer::parseInt).collect(Collectors.toList());
+        System.out.println(" integerDescendingList " + integerDescendingList);
+
+        List<Integer> sortedSerialList = integerDescendingList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        System.out.println( " reverseOrder " + sortedSerialList);
+        Assert.assertTrue(integerDescendingList.equals(sortedSerialList));
+    }
+
+    public void doSerialNumberSortingAscending(){
+
+        navigateToOrgList();
+        Actions act = new Actions(getDriver());
+        List<String> actualSerialNumberList = serialList.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<Integer> integersActualSerialNumberList = actualSerialNumberList.stream().map(Integer::parseInt).collect(Collectors.toList());
+        Collections.sort(integersActualSerialNumberList);
+        System.out.println("integersActualSerialNumberList:" + integersActualSerialNumberList);
+        act.doubleClick(serialColumn);
+        List<String> afterSortSerialNumber = serialList.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<Integer> integersAfterSortSerialNumber = afterSortSerialNumber.stream().map(Integer::parseInt).collect(Collectors.toList());
+        System.out.println(" afterSortSerialNumber " + integersAfterSortSerialNumber);
+        Assert.assertTrue(integersAfterSortSerialNumber.equals(integersActualSerialNumberList));
+    }
+
+    public void seeSelectedEntriesCount() {
+        navigateToOrgList();
+        clickOn(showEntriesDropdown);
+        List<WebElement> showEntriesDropdownOptions = getDriver().findElements(By.xpath("//select/option")).stream().collect(Collectors.toList());
+        String entryCountOptions;
+        for (WebElement element : showEntriesDropdownOptions) {
+            entryCountOptions = element.getText();
+            element.click();
+            List<WebElement> serialNumberListSize = getDriver().findElements(net.serenitybdd.core.annotations.findby.By.xpath("//table[@id='OrganizationList']/tbody/tr/td[1]"));
+            int entryCountOptionsSize = Integer.parseInt(entryCountOptions);
+            Assert.assertTrue(serialNumberListSize.size() <= entryCountOptionsSize);
+            System.out.println("  OrgListValue : "   + serialNumberListSize.size());
+            System.out.println("  Serial Number count     : "   + entryCountOptionsSize);
+            clickOn(showEntriesDropdown);
+        }
+    }
+
 }

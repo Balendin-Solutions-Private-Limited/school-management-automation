@@ -1,4 +1,4 @@
-package in.balendin.schoolmanagment.testcases.features;
+package in.balendin.schoolmanagment.testcases.organization;
 import in.balendin.schoolmanagment.steps.AddOrganizationSteps;
 import in.balendin.schoolmanagment.steps.LoginSteps;
 import in.balendin.schoolmanagment.testcases.basetest.BaseTestCase;
@@ -29,8 +29,8 @@ public class OrganizationTestCase extends BaseTestCase {
     }
 
     @Test()
-    @Title("verify super admin can create Organization")
-    public void T1_OrganizationCreate() {
+    @Title("verify super admin is able to  create Organization")
+    public void createOrganization() {
         organizationSteps.navigateToOrganizationForm();
         organizationSteps.createOrganization();
         organizationSteps.verifyOrganizationCreate();
@@ -38,7 +38,7 @@ public class OrganizationTestCase extends BaseTestCase {
 
     @Test()
     @Title("verify super admin can create Organization along with School")
-    public void T2_OrganizationCreateAlongWithSchool() {
+    public void createOrganizationWithSchool() {
         organizationSteps.navigateToOrganizationForm();
         organizationSteps.createOrganizationAlongWithSchool();
         organizationSteps.verifyOrganizationAndSchoolCreated();
@@ -60,8 +60,8 @@ public class OrganizationTestCase extends BaseTestCase {
 
     }
     @Test
-    @Title("verify super admin can Update Organization")
-    public void T3_editOrganization() {
+    @Title("verify super admin can edit Organization")
+    public void editOrganization() {
         organizationSteps.EditOrganization();
         organizationSteps.verifyOrganizationEdited();
     }
@@ -74,36 +74,61 @@ public class OrganizationTestCase extends BaseTestCase {
     }
     @Test
     @Title("verify super admin can Delete Organization")
-    public void T4_deleteOrganization() {
-        organizationSteps.verifyOrganizationDelete();
+    public void deleteOrganization() {
+        organizationSteps.navigateToOrganizationForm();
+        organizationSteps.createOrganization();
+        organizationSteps.searchOrganization();
+        organizationSteps.verifySuperAdminIsAbleToDeleteOrganization();
     }
 
     @Test
-    @Title("verify super admin Organization Address popup")
-    public void T4_verifyOrganizationAddressPageAndClosePage() {
+    @Title("verify super admin is able to see  Organization Address popup and close popup")
+    public void verifyAbleToSeeOrganizationAddressPageAndClosePopup() {
         organizationSteps.verifyOrganizationAddressPageAndClosePage();
-    }
-    @Test()
-    @Title("verify show entries in Organization List page")
-    public void T6_VerifyShowEntries() {
-        organizationSteps.verifyShowEntries();
     }
 
     @Test
     @Title("verify Organization Page Pagination")
-    public void T10_OrganizationPagePagination() {
+    public void organizationPagePagination() {
         organizationSteps.verifyOrganizationPagePagination();
     }
+
     @Test
-    @Title("verify admin logout")
-    public void T10_VerifyAdminLogOut() {
+    @Title("verify admin is able to logout")
+    public void verifyAdminLogOut() {
         organizationSteps.verifyAdminAbleToLogout();
     }
 
     @Test
-    @Title("verify Organization Page Pagination")
-    public void T10_VerifyContactNameAndNumberFields() {
+    @Title("verify required fields contact number and contact name")
+    public void verifyContactNameAndContactNumberRequiredFields() {
         organizationSteps.VerifyContactNameAndNumberFields();
     }
 
+
+    @Test
+    @Title("Verify super admin can able to see organization list ")
+    public void superAdminIsSeeOrganizationList() {
+        organizationSteps.redirectToOrgList();
+
+    }
+
+    @Test
+    @Title("Verify super admin can redirect to organization list when click on GoBack button")
+    public void redirectToOrganizationList() {
+        organizationSteps.redirectToOrganizationList();
+    }
+    @Test
+    @Title("Verify super admin can able to sort serial number in ascending and descending order")
+    public void verifySuperAdminIsAbleToSortSerialNumberAscendingDescending() {
+        organizationSteps.SortSerialNumberAscending();
+        organizationSteps.SortSerialNumberDescending();
+    }
+
+    @Test
+    @WithTagValuesOf("pageDropdown")
+    @Title("Verify super admin can able to see selected entry option in page show entries dropdown")
+    public void verifySuperAdminIsAbleToSeeSelectedEntryCount() {
+        organizationSteps.superAdminIsAbleToSeeSelectedEntryCount();
+    }
 }
