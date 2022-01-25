@@ -2,8 +2,7 @@ package in.balendin.schoolmanagment.steps;
 
 import in.balendin.schoolmanagment.pages.AddOrganizationPage;
 import net.thucydides.core.annotations.Step;
-import net.thucydides.core.annotations.Title;
-import org.junit.Test;
+
 
 public class AddOrganizationSteps {
 
@@ -15,6 +14,8 @@ public class AddOrganizationSteps {
     }
 
     Boolean isSchool = true;
+    @Step("Redirect to org list")
+    public void redirectToOrgList(){ organizationPage.navigateToOrgList();}
 
     @Step("This step will fill data in Organization form")
     public void createOrganization() {
@@ -69,11 +70,6 @@ public class AddOrganizationSteps {
         organizationPage.verifyOrganizationUpdated();
     }
 
-    @Step("This step will verify organization Delete")
-    public void verifyOrganizationDelete() {
-        organizationPage.navigateToOrgList();
-        organizationPage.deleteOrganization();
-    }
 
     @Step("This step will verify organization Address Popup")
     public void verifyOrganizationAddressPageAndClosePage() {
@@ -82,7 +78,7 @@ public class AddOrganizationSteps {
     }
     @Step("This step will verify Organization Address")
     public void verifyShowEntries() {
-        organizationPage.verifyShowEntries(25);
+        organizationPage.verifyShowEntries(9);
 
     }
 
@@ -102,4 +98,34 @@ public class AddOrganizationSteps {
         organizationPage.navigateToAddOrganizationForm();
         organizationPage.VerifyContactNameAndNumberFields();
     }
+
+    @Step("Verify super admin are able to search created organization")
+    public void searchOrganization(){
+        organizationPage.searchOrganization();
+    }
+
+    @Step("Verify super admin are able to delete organization")
+    public void verifySuperAdminIsAbleToDeleteOrganization(){
+        organizationPage.deleteOrganization();
+    }
+    @Step("Redirect to organization list when clicks on GoBack button")
+    public void redirectToOrganizationList() {
+        organizationPage.redirectToOrganizationList();
+    }
+
+
+    @Step("Verify super admin are able to sort serial number in ascending ")
+    public void SortSerialNumberAscending() {
+        organizationPage.doSerialNumberSortingAscending();
+    }
+    @Step("Verify super admin are able to sort serial number in descending")
+    public void SortSerialNumberDescending() {
+        organizationPage.doSerialNumberDescending();
+    }
+
+    @Step("Verify super admin are able to see selected number of entries like 10,25,50,100")
+    public void superAdminIsAbleToSeeSelectedEntryCount() {
+        organizationPage.seeSelectedEntriesCount();
+    }
+
 }

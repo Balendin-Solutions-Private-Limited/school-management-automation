@@ -1,4 +1,4 @@
-package in.balendin.schoolmanagment.testcases.features;
+package in.balendin.schoolmanagment.testcases.processingfee;
 
 import in.balendin.schoolmanagment.steps.LoginSteps;
 import in.balendin.schoolmanagment.steps.ProcessingFeeSteps;
@@ -33,25 +33,25 @@ public class ProcessingFeeTestCase extends BaseTestCase {
     }
 
     @Test()
-    @Title("verify admin can create ProcessingFee Successfully")
-    public void T1_CreateProcessingFeeAndVerifyColumnsData() {
+    @Title("verify admin can create processing fee Successfully")
+    public void createProcessingFeeAndVerifyColumnsData() {
         feeSteps.CreateProcessingFee();
     }
 
     @Test()
     @Title("verify admin Update Processing Fee")
-    public void T2_verifyProcessingUpdate() {
+    public void verifyProcessingUpdate() {
         feeSteps.verifyProcessingFeeEdit();
     }
 
     @Test()
     @Title("verify admin Delete Processing Fee")
-    public void T3_verifyDeleteProcessingFee() {
+    public void verifyDeleteProcessingFee() {
         feeSteps.verifyDeleteProcessingFee();
     }
     @Test()
     @Title("verify existing Processing Fee School Name displayed in the Select school dropdown in Add Processing Fee Page")
-    public void T4_verifyExistingSchoolNameDisplayedInSelectSchoolDropdown() {
+    public void verifyExistingSchoolNameDisplayedInSelectSchoolDropdown() {
         feeSteps.verifyExistingSchoolNameDisplayedInSelectSchoolDropdown();
     }
 }

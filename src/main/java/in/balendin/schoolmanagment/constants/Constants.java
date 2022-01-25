@@ -1,7 +1,7 @@
 package in.balendin.schoolmanagment.constants;
 
 public class Constants {
-    public static final String ORG_LOGO = "D:\\SchoolManagement\\school management\\src\\test\\resources\\images\\Image.jpg";
+    public static final String ORG_LOGO = "C:\\Users\\Mangesh\\IdeaProjects\\school-management-automation\\src\\test\\resources\\images\\Image.jpg";
     public static final String DELETE_SUCCESS = "The role access has been deleted successfully.";
     public static final String ACTION_NAME = "Action Name";
     public static final String EXP_ORG_EXIST = "Sorry! Organization name already exist.";
