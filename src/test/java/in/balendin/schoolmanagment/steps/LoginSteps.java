@@ -1,12 +1,18 @@
 package in.balendin.schoolmanagment.steps;
 
 import in.balendin.schoolmanagment.pages.LoginPage;
+import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Step;
 import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
 
-public class LoginSteps {
+import static net.serenitybdd.core.Serenity.getDriver;
+
+public class LoginSteps  {
+
 
     LoginPage loginPage;
+
 
     @Step("Login to application as super admin")
     public void loginAsSuperAdmin(){
@@ -15,7 +21,7 @@ public class LoginSteps {
 
     @Step("Navigate to application")
     public void navigateToApplication(){
-        loginPage.getDriver().manage().window().maximize();
+        getDriver().manage().window().maximize();
         loginPage.open();
     }
 
