@@ -40,4 +40,45 @@ public class StudentTestCase extends BaseTestCase {
     public void searchStudentByAdmissionNumber(){
         studentSteps.verifyAdminIsAbleToSearchStudentByAdmissionNumber();
     }
+
+    @Test
+    @Title("Verify Admin functionality student Show Entry count")
+    public void verifyStudentListShowEntryFunctionality(){
+        studentSteps.verifyStudentListShowEntryFunctionality();
+    }
+    @Test
+    @Title("Verify Admin pagination functionality student list page")
+    public void verifyPaginationStudentList(){
+        studentSteps.verifyPaginationStudentList();
+    }
+
+    @Test
+    @Title("Verify Admin Student Template download and Import Student Data")
+    public void verifyTemplateDownloadAndImportStudentData(){
+        studentSteps.verifyTemplateDownloadAndImportStudentData();
+    }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

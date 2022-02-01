@@ -16,4 +16,19 @@ public class StudentSteps {
         studentPage.selectSchool();
         studentPage.searchStudentsByAdmissionNumber();
     }
+    @Step("Verify admin Student Show Entries ")
+    public void verifyStudentListShowEntryFunctionality() {
+        studentPage.navigateToStudentList();
+        studentPage.verifyShowEntries(1);
+    }
+    @Step("Verify Admin pagination functionality student list page")
+    public void verifyPaginationStudentList() {
+        studentPage.navigateToStudentList();
+        studentPage.verifyPagination();
+    }
+    @Step("Verify Admin Student Template download and Import Student Data")
+    public void verifyTemplateDownloadAndImportStudentData() {
+        studentPage.navigateToStudentList();
+        studentPage.verifyTemplateDownloadAndImportStudentData();
+    }
 }
