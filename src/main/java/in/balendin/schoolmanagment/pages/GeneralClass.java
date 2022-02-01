@@ -12,6 +12,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static in.balendin.schoolmanagment.constants.Constants.DELETE_SUCCESS;
@@ -195,7 +196,26 @@ public class GeneralClass extends PageObject {
         System.out.println("actual    " + actual + "\n" + "sortedList    " + sortedList);
         Assert.assertEquals(actual, sortedList);
     }
+    public void sortStudentPageAscending(WebElement columnHeader, String Xpath) {
+        columnHeader.click();
+        List<WebElement> elements = getDriver().findElements(By.xpath(Xpath));
+        List<String> actual = elements.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> result = actual.stream().map(String::toLowerCase).collect(Collectors.toList());
+        List<String> expected = result.stream().sorted().collect(Collectors.toList());
+        System.out.println("Result    " + result + "\n" + "expected    " + expected);
+        Assert.assertEquals(result, expected);
 
+    }
+
+    public void sortStudentPageDescending(WebElement columnHeader, String Xpath) {
+        columnHeader.click();
+        List<WebElement> elements = getDriver().findElements(By.xpath(Xpath));
+        List<String> originalList = elements.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> actual = originalList.stream().map(String::toLowerCase).collect(Collectors.toList());
+        List<String> sortedList = actual.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        System.out.println("actual    " + actual + "\n" + "sortedList    " + sortedList);
+        Assert.assertEquals(actual, sortedList);
+    }
     public void sortSrNoAscending(WebElement OrgNameHeader, String Xpath) {
 
   /*      Actions actions = new Actions(getDriver());
@@ -278,4 +298,40 @@ public class GeneralClass extends PageObject {
 
     }
 
+    public void searchStudent(List<WebElement> studentData, WebElement nxtBtn, WebElementFacade lblNoData, WebElement searchStudent,WebElement filterResult) {
+        List<String> studentList = new ArrayList<>();
+        for (WebElement studentDataList: studentData) {
+            studentList.add(studentDataList.getText());
+        }
+        String nxtBtnClassName = nxtBtn.getAttribute("class");
+        while (!nxtBtnClassName.contains("disabled")){
+            nxtBtn.click();
+            for (WebElement studentDataList: studentData) {
+                studentList.add(studentDataList.getText());
+            }
+            System.out.println(" Test: " + studentList);
+            nxtBtnClassName = nxtBtn.getAttribute("class");
+        }
+        for (String studentDataList:studentList) {
+            System.out.println(" Admission Numbers:  " + studentDataList);
+
+        }
+        int totalStudentListSize = studentList.size();
+        System.out.println(" Admission Number Total Size:" + totalStudentListSize);
+
+        //select random admission number
+
+        Random rand = new Random();
+        String randomStudentData =  studentList.get(rand.nextInt(studentList.size()));
+        System.out.println(" Select : " + randomStudentData);
+        if (lblNoData.containsText("No data available in table")){
+            searchStudent.sendKeys("");
+        }
+        else {
+            searchStudent.sendKeys(randomStudentData);
+        }
+//        WebElement filterResult = getDriver().findElement(By.xpath("//table[@id='studentList']/tbody/tr/td[1]"));
+        System.out.println("Filter Text : "  + filterResult.getText());
+        Assert.assertEquals(filterResult.getText(),randomStudentData);
+    }
 }
