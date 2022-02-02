@@ -3,7 +3,6 @@ package in.balendin.schoolmanagment.steps;
 import in.balendin.schoolmanagment.pages.AddOrganizationPage;
 import net.thucydides.core.annotations.Step;
 
-
 public class AddOrganizationSteps {
 
     AddOrganizationPage organizationPage;

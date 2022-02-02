@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -86,6 +87,7 @@ public class GeneralClass extends PageObject {
 
 
     }
+
     public void CreateOrganizationLogo(WebElement name, WebElement des, WebElement logo, WebElement line1, WebElement line2,
                                        WebElement location, WebElement city, WebElement code, WebElement nameUser, WebElement number, WebElement btnSubmit) {
         data = new OrganizationData().generateOrgDetails();
@@ -159,10 +161,15 @@ public class GeneralClass extends PageObject {
         }
 
     }
+
     public void seeList(WebElement showEntriesList, String listXpath) {
+
         clickOn(showEntriesList);
-        List<WebElement> listDropdown = new ArrayList<>(getDriver().findElements(By.xpath("//select/option")));
+
+        List<WebElement> listDropdown = new ArrayList<>(getDriver().findElements(By.xpath("//select[@name='studentList_length']//option")));
+
         String value = null;
+
         for (WebElement element : listDropdown) {
             value = element.getText();
             element.click();
@@ -174,6 +181,7 @@ public class GeneralClass extends PageObject {
             clickOn(showEntriesList);
         }
     }
+
     public void sortNameAscending(WebElement OrgNameHeader, String Xpath) {
         OrgNameHeader.click();
         List<WebElement> elements = getDriver().findElements(By.xpath(Xpath));
@@ -271,9 +279,10 @@ public class GeneralClass extends PageObject {
     }
 
 
-    public void doPagination(@NotNull List<WebElement> orgNamesList, WebElement nextBtn, WebElement showEntriesCount) {
+    public void doPagination(@NotNull List<WebElement> orgNamesList, WebElement nextBtn, WebElement showEntriesCount, WebElement btnPrevious) {
 
         List<String> listData = new ArrayList<>();
+
         for (WebElement list1 : orgNamesList) {
             listData.add(list1.getText());
         }
@@ -294,10 +303,30 @@ public class GeneralClass extends PageObject {
         String maxEntries = showEntriesCount.getText().split(" ")[5];
         System.out.println("Total size of Entries   " + maxEntries);
 
-        Assert.assertEquals(maxEntries, String.valueOf(totalNames));
+
+        String previousBtnClassName = btnPrevious.getAttribute("class");
+        while (!previousBtnClassName.contains("disabled")) {
+            for (WebElement list1 : orgNamesList) {
+                listData.remove(list1.getText());
+            }
+            btnPrevious.click();
+
+            previousBtnClassName = btnPrevious.getAttribute("class");
+        }
+        for (String string : listData) {
+            System.out.println(string);
+        }
+        int firstPageCount = listData.size();
+        System.out.println("First Page Data Size  :  " + firstPageCount);
+
+        String minEntries = showEntriesCount.getText().split(" ")[3];
+
+        System.out.println("First Page of Entries   " + minEntries);
+
+        Assert.assertEquals(minEntries, String.valueOf(firstPageCount));
+
 
     }
-
     public void searchStudent(List<WebElement> studentData, WebElement nxtBtn, WebElementFacade lblNoData, WebElement searchStudent,WebElement filterResult) {
         List<String> studentList = new ArrayList<>();
         for (WebElement studentDataList: studentData) {

@@ -40,6 +40,9 @@ public class AddOrganizationPage extends PageObject {
     @FindBy(id = "OrganizationList_next")
     private WebElement btnNext;
 
+    @FindBy(id = "OrganizationList_previous")
+    private WebElement btnPrevious;
+
     @FindBy(id = "OrganizationList_info")
     private WebElement showingEntries;
 
@@ -379,7 +382,7 @@ public class AddOrganizationPage extends PageObject {
 
     public void verifyPagination() {
         GeneralClass generalClass = new GeneralClass();
-        generalClass.doPagination(orgNamesList, btnNext, showingEntries);
+        generalClass.doPagination(orgNamesList, btnNext, showingEntries,btnPrevious);
     }
 
     public void logoutAdmin() {

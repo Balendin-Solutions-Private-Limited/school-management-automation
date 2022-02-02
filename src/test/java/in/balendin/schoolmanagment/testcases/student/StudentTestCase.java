@@ -39,7 +39,6 @@ public class StudentTestCase extends BaseTestCase {
     @Title("Admin is able to search student by Admission Number")
     public void searchStudentByAdmissionNumber(){
         studentSteps.verifyAdminIsAbleToSearchStudentByAdmissionNumber();
-
     }
     @Test
     @Title("Admin is able to search student by Student name")
@@ -58,6 +57,7 @@ public class StudentTestCase extends BaseTestCase {
     public void searchStudentBySchoolNames(){
         studentSteps.verifyAdminIsAbleToSearchStudentBySchoolNames();
     }
+
     @Test
     @Title("Admin is able to sort student admission number in ascending and descending order ")
     public void sortAdmissionNumber(){
@@ -73,4 +73,46 @@ public class StudentTestCase extends BaseTestCase {
     public void sortStudentDOB(){
         studentSteps.verifyAdminIsAbleToSortStudentDOB();
     }
+
+
+    @Test
+    @Title("Verify Admin functionality student Show Entry count")
+    public void verifyStudentListShowEntryFunctionality(){
+        studentSteps.verifyStudentListShowEntryFunctionality();
+    }
+    @Test
+    @Title("Verify Admin pagination functionality student list page")
+    public void verifyPaginationStudentList(){
+        studentSteps.verifyPaginationStudentList();
+    }
+
+    @Test
+    @Title("Verify Admin Student Template download and Import Student Data")
+    public void verifyTemplateDownloadAndImportStudentData(){
+        studentSteps.verifyTemplateDownloadAndImportStudentData();
+    }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
