@@ -40,6 +40,40 @@ public class StudentTestCase extends BaseTestCase {
     public void searchStudentByAdmissionNumber(){
         studentSteps.verifyAdminIsAbleToSearchStudentByAdmissionNumber();
     }
+    @Test
+    @Title("Admin is able to search student by Student name")
+    public void SearchStudentByStudentName(){
+        studentSteps.verifyAdminIsAbleToSearchStudentByStudentName();
+    }
+
+    @Test
+    @Title("Admin is able to search student by Student DOB")
+    public void SearchStudentByStudentDOB(){
+        studentSteps.verifyAdminIsAbleToSearchStudentByStudentDOB();
+    }
+
+    @Test
+    @Title("Admin is able to search student according to school names")
+    public void searchStudentBySchoolNames(){
+        studentSteps.verifyAdminIsAbleToSearchStudentBySchoolNames();
+    }
+
+    @Test
+    @Title("Admin is able to sort student admission number in ascending and descending order ")
+    public void sortAdmissionNumber(){
+        studentSteps.verifyAdminIsAbleToSortAdmissionNumber();
+    }
+    @Test
+    @Title("Admin is able to sort student name in ascending and descending order ")
+    public void sortStudentName(){
+        studentSteps.verifyAdminIsAbleToSortStudentName();
+    }
+    @Test
+    @Title("Admin is able to sort student DOB in ascending and descending order ")
+    public void sortStudentDOB(){
+        studentSteps.verifyAdminIsAbleToSortStudentDOB();
+    }
+
 
     @Test
     @Title("Verify Admin functionality student Show Entry count")

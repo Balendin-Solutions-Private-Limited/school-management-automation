@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,12 +38,12 @@ public class StudentPage extends PageObject {
 
     @FindBy(xpath = "//div[@id='information-part']//button[@class='btn btn-primary']")
     private WebElementFacade btnStepNext;
+    @FindBy(css = "paginate_button page-item next disabled")
+    private WebElement pageButton;
 
     @FindBy(xpath = "/html/body/div/div[1]/section[2]/div/div[2]/div/div/div[2]/div/div[2]/div[3]/form/div[1]/select")
     private WebElementFacade selectSchoolDropdown;
 
-  /*  @FindBy(xpath = "//div/input[@name='excelFile' and @id = 'excelFile']")
-    private WebElementFacade fileExcel;*/
 
     @FindBy(xpath = "//button[@id='importStudSubmit']")
     private WebElementFacade importStu_Submit;
@@ -76,45 +78,109 @@ public class StudentPage extends PageObject {
 
     private WebDriverWait wait;
 
+    @FindBy(id = "studentList_next")
+    private WebElement nxtPageBtn;
+
+    @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[1]")
+    private List<WebElement> admissionNumberList;
+
+    @FindBy(css = "#studentList>tbody>tr>td:nth-child(2)")
+    private List<WebElement> studentNameList;
+
+    @FindBy(css = "#studentList>tbody>tr>td:nth-child(3)")
+    private List<WebElement> studentDOBList;
+
+    @FindBy(css = "#studentList>tbody>tr>td:nth-child(5)")
+    private List<WebElement> studentSchoolNameList;
+
+   @FindBy(xpath = "//div[@id='studentList_filter']/label/input")
+    private WebElement searchStudent;
+
+    @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[1]")
+            private  WebElement filterResultAdmissionNumber;
+
+    @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[2]")
+    private WebElement filterResultStudentName;
+
+    @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[3]")
+    private WebElement filterResultStudentDOB;
+
+    @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[4]")
+    private WebElement filterResultMobileNumber;
+
+    @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[5]")
+    private WebElement filterResultStudentSchoolList;
+
+    @FindBy(xpath = "//table[@id='studentList']/thead/tr/th[1]")
+    private WebElement headerAdmissionNumber;
+
+    @FindBy(xpath = "//table[@id='studentList']/thead/tr/th[2]")
+    private WebElement headerStudentName;
+
+    @FindBy(xpath = "//table[@id='studentList']/thead/tr/th[3]")
+    private WebElement headerStudentDOB;
+
+    @FindBy(xpath = "//table[@id='studentList']/thead/tr/th[4]")
+    private WebElement headerMobile;
+
+    @FindBy(xpath = "//table[@id='studentList']/thead/tr/th[5]")
+    private WebElement headerSchool;
+
+    @FindBy(xpath = "//select[@name='studentList_length']")
+            private WebElement ddlShowEntries;
 
 
-    public void navigateToStudentList() {
+
+    GeneralClass generalClass;
+
+    public void navigateToStudentList(){
         clickOn(studentTab);
         clickOn(importStudent);
         String Title = getTitle();
         Assert.assertTrue(Title.contains("Student List"));
     }
 
+    public void select100Entries(){
+        waitFor(5000);
+        Select entries = new Select(ddlShowEntries);
+        entries.selectByValue("100");
+    }
 
-    public void select100Entries() {
+    public void searchStudentAdmissionNumber(){
+        generalClass.searchStudent(admissionNumberList,nxtPageBtn,lblNoData,searchStudent,filterResultAdmissionNumber);
+
+    }
+    public void searchStudentByStudentName(){
+        generalClass.searchStudent(studentNameList,nxtPageBtn,lblNoData,searchStudent,filterResultStudentName);
+    }
+
+    public void searchStudentByDOB(){
+        generalClass.searchStudent(studentDOBList,nxtPageBtn,lblNoData,searchStudent,filterResultStudentDOB);
+
+    }
+    public void searchStudentsAccordingToSchool(){
+        generalClass.searchStudent(studentSchoolNameList,nxtPageBtn,lblNoData,searchStudent,filterResultStudentSchoolList);
 
     }
 
-    public void searchStudentsByAdmissionNumber() {
-        int paginationSize = getDriver().findElements(By.cssSelector("#studentList_paginate>ul>li>a")).size();
-        System.out.println(paginationSize);
+    public void sortAdmissionNumber(){
+        String xpath  ="//table[@id='studentList']/tbody/tr/td[1]";
+        generalClass.sortStudentPageAscending(headerAdmissionNumber,xpath);
+        generalClass.sortStudentPageDescending(headerAdmissionNumber,xpath);
+    }
+    public void sortStudentName(){
 
-        List<String> names = new ArrayList<String>();
-
-        for (int i = 1; i <= paginationSize; i++) {
-
-            String paginationSelector = "#studentList_paginate>ul>li>a:nth-child(" + i + ")";
-            getDriver().findElements(By.cssSelector("paginationSelector"));
-            List<WebElement> namesElement = getDriver().findElements(By.cssSelector("#studentList_paginate>ul>li>a:nth-child(1)"));
-
-            for (WebElement ignored : namesElement) {
-                names.add(ignored.getText());
-            }
+        String xpath  ="//table[@id='studentList']/tbody/tr/td[2]";
+        generalClass.sortStudentPageAscending(headerStudentName,xpath);
+        generalClass.sortStudentPageDescending(headerStudentName,xpath);
 
         }
-        for (String name : names) {
-            System.out.println(names);
-        }
-        int totalNames = names.size();
-        System.out.println("Total Number of Names:  " + totalNames);
 
-        String displayedCount = getDriver().findElement(By.id("studentList_info")).getText().split(" ")[5];
-        System.out.println("Total Number of Names displayedCount:  " + displayedCount);
+    public void sortStudentDOB(){
+        String xpath  ="//table[@id='studentList']/tbody/tr/td[3]";
+        generalClass.sortStudentPageAscending(headerStudentDOB,xpath);
+        generalClass.sortStudentPageDescending(headerStudentDOB,xpath);
+
     }
 
 

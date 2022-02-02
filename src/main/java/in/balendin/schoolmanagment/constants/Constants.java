@@ -10,5 +10,5 @@ public class Constants {
     public static final String FEE_SUCCESS = "The processing fee was created successfully!";
     public static final String HEADER_TEMP_EDIT_PAGE = "Edit Marketing Template";
     public static final String EMAIL_SUCCESS_MSG = "The Email Notification was saved successfully!";
-    public static final String MYDOWNLOADS = "C:\\Users\\Admin\\Downloads";
+    public static final String MYDOWNLOADS = "C:\\Users\\Mangesh\\Downloads";
 }
