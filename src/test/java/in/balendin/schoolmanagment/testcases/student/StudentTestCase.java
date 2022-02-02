@@ -29,6 +29,8 @@ public class StudentTestCase extends BaseTestCase {
         loginSteps.navigateToApplication();
         loginSteps.loginAsSuperAdmin();
     }
+
+
     @Test
     @Title("Admin is able to see student list")
     public void redirectToStudentList(){
