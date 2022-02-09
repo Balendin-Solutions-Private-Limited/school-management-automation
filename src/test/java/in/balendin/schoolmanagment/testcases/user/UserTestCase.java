@@ -1,5 +1,6 @@
 package in.balendin.schoolmanagment.testcases.user;
 
+
 import in.balendin.schoolmanagment.steps.LoginSteps;
 import in.balendin.schoolmanagment.steps.UserSteps;
 import in.balendin.schoolmanagment.testcases.basetest.BaseTestCase;
@@ -17,7 +18,6 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @WithTagValuesOf("User")
 
-
 public class UserTestCase extends BaseTestCase {
     @Steps
     LoginSteps loginSteps;
@@ -30,6 +30,7 @@ public class UserTestCase extends BaseTestCase {
         loginSteps.navigateToApplication();
         loginSteps.loginAsSuperAdmin();
     }
+}
 
     @Test
     @Title("Verify admin is able to navigate user list")
