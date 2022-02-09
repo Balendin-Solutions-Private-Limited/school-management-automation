@@ -68,4 +68,15 @@ public class DataGenerator {
         String randomNumbers = RandomStringUtils.randomNumeric(5);
         return 79393 + randomNumbers;
     }
+
+    public String generatePassword(){
+        return faker.internet().password();
+    }
+    public String generateEmail(){
+        return faker.internet().safeEmailAddress();
+    }
+    public String generateUsername(){
+        return  getOrg_Title()+getOrg_ContactName();
+    }
+
 }

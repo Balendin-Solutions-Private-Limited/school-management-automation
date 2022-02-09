@@ -29,7 +29,7 @@ public class OrganizationTestCase extends BaseTestCase {
     }
 
     @Test()
-    @Title("verify super admin is able to  create Organization")
+    @Title("verify super admin is able to create Organization")
     public void createOrganization() {
         organizationSteps.navigateToOrganizationForm();
         organizationSteps.createOrganization();

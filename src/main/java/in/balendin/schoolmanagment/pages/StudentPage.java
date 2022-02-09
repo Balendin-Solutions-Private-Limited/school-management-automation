@@ -97,7 +97,7 @@ public class StudentPage extends PageObject {
     private WebElement searchStudent;
 
     @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[1]")
-            private  WebElement filterResultAdmissionNumber;
+    private  WebElement filterResultAdmissionNumber;
 
     @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[2]")
     private WebElement filterResultStudentName;
@@ -127,7 +127,7 @@ public class StudentPage extends PageObject {
     private WebElement headerSchool;
 
     @FindBy(xpath = "//select[@name='studentList_length']")
-            private WebElement ddlShowEntries;
+    private WebElement ddlShowEntries;
 
 
 
