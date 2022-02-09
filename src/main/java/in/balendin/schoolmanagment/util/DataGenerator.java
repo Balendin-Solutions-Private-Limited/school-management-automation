@@ -3,7 +3,7 @@ package in.balendin.schoolmanagment.util;
 import com.github.javafaker.Faker;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import static in.balendin.schoolmanagment.constants.Constants.ORG_LOGO;
+import static in.balendin.schoolmanagment.constants.Constants.FILE_LOGO;
 
 public class DataGenerator {
 
@@ -16,13 +16,16 @@ public class DataGenerator {
     public String getOrg_Title() {
         return faker.name().lastName();
     }
+    public String getSchoolCode() {
+        return faker.numerify("GSY##");
+    }
 
     public String getOrg_Description() {
         return faker.company().profession();
     }
 
     public String getOrg_Logo() {
-        return ORG_LOGO;
+        return FILE_LOGO;
     }
 
     public String getOrg_Address1() {

@@ -8,16 +8,12 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static in.balendin.schoolmanagment.constants.Constants.DELETE_SUCCESS;
-import static in.balendin.schoolmanagment.constants.Constants.ORG_LOGO;
+import static in.balendin.schoolmanagment.constants.Constants.FILE_LOGO;
 
 
 public class GeneralClass extends PageObject {
@@ -29,7 +25,7 @@ public class GeneralClass extends PageObject {
         data = new OrganizationData().generateOrgDetails();
         typeInto(name, orgName);
         typeInto(des, data.getOrg_Description());
-        // typeInto(logo, ORG_LOGO);
+        // typeInto(logo, FILE_LOGO);
         typeInto(line1, data.getOrg_Address1());
         typeInto(line2, data.getOrg_Address2());
         typeInto(location, data.getOrg_Location());
@@ -93,7 +89,7 @@ public class GeneralClass extends PageObject {
         data = new OrganizationData().generateOrgDetails();
         typeInto(name, data.getOrg_Title());
         typeInto(des, data.getOrg_Description());
-        logo.sendKeys(ORG_LOGO);
+        logo.sendKeys(FILE_LOGO);
         typeInto(line1, data.getOrg_Address1());
         typeInto(line2, data.getOrg_Address2());
         typeInto(location, data.getOrg_Location());
@@ -162,14 +158,14 @@ public class GeneralClass extends PageObject {
 
     }
 
-    public void seeList(WebElement showEntriesList, String listXpath) {
+    public void seeList(WebElement showEntriesList, String listOfShowEntries, String listXpath) {
 
         clickOn(showEntriesList);
-
-        List<WebElement> listDropdown = new ArrayList<>(getDriver().findElements(By.xpath("//select[@name='studentList_length']//option")));
+        System.out.println("show entry value not called " + listXpath);
+        List<WebElement> listDropdown = new ArrayList<>(getDriver().findElements(By.xpath(listOfShowEntries)));
 
         String value = null;
-
+        System.out.println("show entry value not called " + listXpath);
         for (WebElement element : listDropdown) {
             value = element.getText();
             element.click();
@@ -204,6 +200,7 @@ public class GeneralClass extends PageObject {
         System.out.println("actual    " + actual + "\n" + "sortedList    " + sortedList);
         Assert.assertEquals(actual, sortedList);
     }
+
     public void sortStudentPageAscending(WebElement columnHeader, String Xpath) {
         columnHeader.click();
         List<WebElement> elements = getDriver().findElements(By.xpath(Xpath));
@@ -224,49 +221,30 @@ public class GeneralClass extends PageObject {
         System.out.println("actual    " + actual + "\n" + "sortedList    " + sortedList);
         Assert.assertEquals(actual, sortedList);
     }
-    public void sortSrNoAscending(WebElement OrgNameHeader, String Xpath) {
 
-  /*      Actions actions = new Actions(getDriver());
-        actions.moveToElement(OrgNameHeader).doubleClick().build().perform();*/
+    public void sortSrNoDescending(WebElement serialColumn, String xpath) {
+        getDriver().navigate().refresh();
+        serialColumn.click();
+        List<String> stringDescendingList = getDriver().findElements(By.xpath(xpath)).stream().map(WebElement::getText).collect(Collectors.toList());
+        List<Integer> integerDescendingList = stringDescendingList.stream().map(Integer::parseInt).collect(Collectors.toList());
+        System.out.println(" integerDescendingList " + integerDescendingList);
 
-        List<WebElement> elements = getDriver().findElements(By.xpath(Xpath));
-        List<String> actual = elements.stream().map(WebElement::getText).collect(Collectors.toList());
-        List<Integer> numData = actual.stream().map(Integer::parseInt).collect(Collectors.toList());
-
-  /*      Iterator<WebElement> itr = elements.iterator();
-        while(itr.hasNext()) {
-
-            List<String> numData = new ArrayList<>();
-            numData.add(itr.next().getText());
-
-            System.out.println(itr.next().getText());
-        }*/
-       /* List<Integer> numData = new ArrayList<>();
-        for(int i = 0; i<elements.size(); i++){
-            String text=elements.get(i).getText();
-            numData.set(i, Integer.parseInt(text));
-        }*/
-
-        // Print the list of Integer
-        System.out.println("List of Integer: " + numData);
-
-        List<Integer> expected = numData.stream().sorted().collect(Collectors.toList());
-        System.out.println("Result    " + actual + "\n" + "expected    " + expected);
-        Assert.assertEquals(actual, expected);
-
-
+        List<Integer> sortedSerialList = integerDescendingList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        System.out.println(" reverseOrder " + sortedSerialList);
+        Assert.assertTrue(integerDescendingList.equals(sortedSerialList));
     }
 
-    public void sortSrNoDescending(WebElement OrgNameHeader, String Xpath) {
-        getDriver().navigate().refresh();
-        Actions a = new Actions(getDriver());
-        a.moveToElement(OrgNameHeader).doubleClick().build().perform();
-        List<WebElement> elements = getDriver().findElements(By.xpath(Xpath));
-        List<String> originalList = elements.stream().map(WebElement::getText).collect(Collectors.toList());
-        List<String> actual = originalList.stream().map(String::toLowerCase).collect(Collectors.toList());
-        List<String> sortedList = actual.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-        System.out.println("actual    " + actual + "\n" + "sortedList    " + sortedList);
-        Assert.assertEquals(actual, sortedList);
+    public void sortSrNoAscending(WebElement serialColumn, String xpath) {
+        Actions act = new Actions(getDriver());
+        List<String> actualSerialNumberList = getDriver().findElements(By.xpath(xpath)).stream().map(WebElement::getText).collect(Collectors.toList());
+        List<Integer> integersActualSerialNumberList = actualSerialNumberList.stream().map(Integer::parseInt).collect(Collectors.toList());
+        Collections.sort(integersActualSerialNumberList);
+        System.out.println("integersActualSerialNumberList:" + integersActualSerialNumberList);
+        act.doubleClick(serialColumn);
+        List<String> afterSortSerialNumber = getDriver().findElements(By.xpath(xpath)).stream().map(WebElement::getText).collect(Collectors.toList());
+        List<Integer> integersAfterSortSerialNumber = afterSortSerialNumber.stream().map(Integer::parseInt).collect(Collectors.toList());
+        System.out.println(" afterSortSerialNumber " + integersAfterSortSerialNumber);
+        Assert.assertTrue(integersAfterSortSerialNumber.equals(integersActualSerialNumberList));
     }
 
 
@@ -282,7 +260,11 @@ public class GeneralClass extends PageObject {
     public void doPagination(@NotNull List<WebElement> orgNamesList, WebElement nextBtn, WebElement showEntriesCount, WebElement btnPrevious) {
 
         List<String> listData = new ArrayList<>();
-
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         for (WebElement list1 : orgNamesList) {
             listData.add(list1.getText());
         }
@@ -327,21 +309,22 @@ public class GeneralClass extends PageObject {
 
 
     }
-    public void searchStudent(List<WebElement> studentData, WebElement nxtBtn, WebElementFacade lblNoData, WebElement searchStudent,WebElement filterResult) {
+
+    public void searchStudent(List<WebElement> studentData, WebElement nxtBtn, WebElementFacade lblNoData, WebElement searchStudent, WebElement filterResult) {
         List<String> studentList = new ArrayList<>();
-        for (WebElement studentDataList: studentData) {
+        for (WebElement studentDataList : studentData) {
             studentList.add(studentDataList.getText());
         }
         String nxtBtnClassName = nxtBtn.getAttribute("class");
-        while (!nxtBtnClassName.contains("disabled")){
+        while (!nxtBtnClassName.contains("disabled")) {
             nxtBtn.click();
-            for (WebElement studentDataList: studentData) {
+            for (WebElement studentDataList : studentData) {
                 studentList.add(studentDataList.getText());
             }
             System.out.println(" Test: " + studentList);
             nxtBtnClassName = nxtBtn.getAttribute("class");
         }
-        for (String studentDataList:studentList) {
+        for (String studentDataList : studentList) {
             System.out.println(" Admission Numbers:  " + studentDataList);
 
         }
@@ -351,16 +334,51 @@ public class GeneralClass extends PageObject {
         //select random admission number
 
         Random rand = new Random();
-        String randomStudentData =  studentList.get(rand.nextInt(studentList.size()));
+        String randomStudentData = studentList.get(rand.nextInt(studentList.size()));
         System.out.println(" Select : " + randomStudentData);
-        if (lblNoData.containsText("No data available in table")){
+        if (lblNoData.containsText("No data available in table")) {
             searchStudent.sendKeys("");
-        }
-        else {
+        } else {
             searchStudent.sendKeys(randomStudentData);
         }
 //        WebElement filterResult = getDriver().findElement(By.xpath("//table[@id='studentList']/tbody/tr/td[1]"));
-        System.out.println("Filter Text : "  + filterResult.getText());
-        Assert.assertEquals(filterResult.getText(),randomStudentData);
+        System.out.println("Filter Text : " + filterResult.getText());
+        Assert.assertEquals(filterResult.getText(), randomStudentData);
     }
+
+
+    public void searchSchool(List<WebElement> schoolList, WebElement nxtBtn, WebElement searchSchool, WebElement filterResult) {
+
+        List<String> schoolListData = new ArrayList<>();
+
+        for (WebElement listOfSchool : schoolList) {
+            schoolListData.add(listOfSchool.getText());
+        }
+        String nxtBtnClassName = nxtBtn.getAttribute("class");
+        while (!nxtBtnClassName.contains("disabled")) {
+            nxtBtn.click();
+            for (WebElement listOfSchool : schoolList) {
+                schoolListData.add(listOfSchool.getText());
+            }
+            System.out.println(" Test: " + schoolListData);
+            nxtBtnClassName = nxtBtn.getAttribute("class");
+        }
+        for (String studentDataList : schoolListData) {
+            System.out.println(" schoolListData 1 " + studentDataList);
+
+        }
+        int totalStudentListSize = schoolListData.size();
+        System.out.println(" schoolListData 2:" + totalStudentListSize);
+
+        Random rand = new Random();
+        String randomSchoolProperty = schoolListData.get(rand.nextInt(schoolListData.size()));
+        System.out.println(" Select : " + randomSchoolProperty);
+
+        searchSchool.sendKeys(randomSchoolProperty);
+
+        System.out.println("Filter Text : " + filterResult.getText());
+        Assert.assertTrue(filterResult.getText().contains(randomSchoolProperty));
+    }
+
+
 }

@@ -27,6 +27,7 @@ import java.util.List;
 import static in.balendin.schoolmanagment.constants.Constants.MYDOWNLOADS;
 
 public class StudentPage extends PageObject {
+
     @FindBy(xpath = "/html/body/div/aside/div/nav/ul/li[3]/a")
     private WebElementFacade studentTab;
 
@@ -200,7 +201,8 @@ public class StudentPage extends PageObject {
             waitFor(5000);
             GeneralClass generalClass = new GeneralClass();
             String OrgListXpath = "//table[@id='studentList']/tbody/tr/td[1]";
-            generalClass.seeList(showEntriesList, OrgListXpath);
+            String listOfShowEntries = "//select[@name='studentList_length']//option";
+            generalClass.seeList(showEntriesList, listOfShowEntries, OrgListXpath);
 
         }
 
@@ -228,7 +230,7 @@ public class StudentPage extends PageObject {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-
+        robot.getAutoDelay();
         robot.keyPress(KeyEvent.VK_DOWN);
         robot.delay(2000);
 
@@ -237,7 +239,6 @@ public class StudentPage extends PageObject {
 
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.delay(2000);
-
 
         try {
             Thread.sleep(5000);
