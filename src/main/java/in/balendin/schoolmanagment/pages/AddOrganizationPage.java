@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static in.balendin.schoolmanagment.constants.Constants.ORG_LOGO;
+import static in.balendin.schoolmanagment.constants.Constants.FILE_LOGO;
 
 public class AddOrganizationPage extends PageObject {
 
@@ -230,7 +230,7 @@ public class AddOrganizationPage extends PageObject {
         if (schoolTrue) {
             isSchoolCheckBox.click();
         }
-        school_Logo.sendKeys(ORG_LOGO);
+        school_Logo.sendKeys(FILE_LOGO);
         typeInto(Address_line1, address1);
         //  typeInto(Address_line2, address2);
         typeInto(Location, location);
@@ -319,7 +319,7 @@ public class AddOrganizationPage extends PageObject {
                                  String location, String city, int postalCode, String contactName, String contactNumber) {
         typeInto(organization_Name, Org_Name);
         typeInto(organization_Description, org_Description);
-        //   organization_Logo.sendKeys(ORG_LOGO);
+        //   organization_Logo.sendKeys(FILE_LOGO);
         typeInto(Address_line1, address1);
         //  typeInto(Address_line2, address2);
         typeInto(Location, location);
@@ -376,7 +376,8 @@ public class AddOrganizationPage extends PageObject {
             waitFor(5000);
             GeneralClass generalClass = new GeneralClass();
             String OrgListXpath = "//table[@id='OrganizationList']/tbody/tr/td[1]";
-            generalClass.seeList(showEntriesList, OrgListXpath);
+            String listOfShowEntries = "//select[@name='OrganizationList_length']//option";
+            generalClass.seeList(showEntriesList,listOfShowEntries, OrgListXpath);
         }
     }
 
