@@ -30,25 +30,11 @@ public class UserTestCase extends BaseTestCase {
         loginSteps.navigateToApplication();
         loginSteps.loginAsSuperAdmin();
     }
-}
 
     @Test
     @Title("Verify admin is able to navigate user list")
     public void verifyAdminIsAbleToNavigateUserList(){
         userSteps.adminIsAbleToNavigateToUserList();
-    }
-
-    @Test
-    @Title("Verify admin is able to select random school on add user ")
-    public void verifyAdminIsAbleToSelectSchool(){
-       userSteps.adminIsAbleToSelectRandomSchoolOnAddUserForm();
-    }
-
-    @Test
-    @Title("Verify admin is able to select random organization on add user ")
-    public void verifyAdminIsAbleToSelectOrganization(){
-
-        userSteps.adminIsAbleToSelectRandomOrganizationOnAddUserForm();
     }
 
     @Test
@@ -64,13 +50,13 @@ public class UserTestCase extends BaseTestCase {
     }
 
     @Test
-    @Title("Verify admin is able to create school user with mandatory fields ")
+    @Title("Verify admin is able to create school user with non mandatory fields ")
     public void verifyAdminIsAbleToCreateSchoolUserWithNonMandatoryField(){
         userSteps.adminIsAbleToCreateSchoolUserWithNonMandatoryFiled();
     }
 
     @Test
-    @Title("Verify admin is able to create  organization user with mandatory fields ")
+    @Title("Verify admin is able to create  organization user with non mandatory fields ")
     public void verifyAdminIsAbleToCreateOrganizationUserWithNonMandatoryField(){
         userSteps.adminIsAbleToCreateOrganizationUserWithNonMandatoryFiled();
     }
@@ -119,9 +105,7 @@ public class UserTestCase extends BaseTestCase {
     @Test
     @Title("Verify admin is able to sort contact number in ascending and descending order")
     public void VerifyAdminIsAbleToSortContactNumber(){
-       userSteps.adminIsAbleToSortContactNumber();
-
-    }
+       userSteps.adminIsAbleToSortContactNumber();}
     @Test
     @Title("Verify admin is able to sort role profile in ascending and descending order")
     public void VerifyAdminIsAbleToSortRoleProfile(){
@@ -133,4 +117,55 @@ public class UserTestCase extends BaseTestCase {
     public void verifyAdminIsAbleToSearchUserByName(){
         userSteps.adminIsAbleToSearchUserByName();
     }
+    @Test
+    @Title("Verify admin is able to search user by username")
+    public void verifyAdminIsAbleToSearchUserByUsername(){
+        userSteps.adminIsAbleToSearchUserByUsername();
+    }
+    @Test
+    @Title("Verify admin is able to search user by email")
+    public void verifyAdminIsAbleToSearchUserByEmail(){
+        userSteps.adminIsAbleToSearchUserByEmail();
+    }
+    @Test
+    @Title("Verify admin is able to search user by school or organization")
+    public void verifyAdminIsAbleToSearchUserBySchoolOrOrganization(){
+        userSteps.adminIsAbleToSearchUserBySchoolOrOrganization();
+    }
+    @Test
+    @Title("Verify admin is able to search user by contact number")
+    public void verifyAdminIsAbleToSearchUserByContactNumber(){
+        userSteps.adminIsAbleToSearchUserByContactNumber();
+    }
+
+    @Test
+    @Title("Verify admin is able to search user by role profile")
+    public void verifyAdminIsAbleToSearchUserByRoleProfile(){
+        userSteps.adminIsAbleToSearchUserByRoleProfile();
+    }
+
+    @Test
+    @Title("Verify admin is able to do pagination")
+    public void verifyAdminIsAbleToDoPagination(){
+        userSteps.adminIsAbleToDoPagination();
+    }
+
+    @Test
+    @Title("Verify Admin functionality student Show Entry count")
+    public void verifyUserListShowEntryFunctionality() {
+        userSteps.verifyUserListShowEntryFunctionality();
+    }
+
+    @Test
+    @Title("Verify Admin is able to see validation message for mandatory filed while creating school and organization user")
+    public void verifyValidationMessageForSchoolAndOrganizationUser(){
+        userSteps.validationMessageForMandatoryFieldsForOrganizationOrSchoolUser();
+    }
+
+    @Test
+    @Title("Verify Admin is able to see validation message for all fields in the user form")
+    public void verifyValidationMessageForAllFieldsInTheUserForm(){
+        userSteps.adminIsAbleToSeeAllFieldFormValidation();
+    }
+
 }

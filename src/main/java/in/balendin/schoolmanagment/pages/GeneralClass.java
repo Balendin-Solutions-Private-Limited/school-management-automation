@@ -292,7 +292,6 @@ public class GeneralClass extends PageObject {
                 listData.remove(list1.getText());
             }
             btnPrevious.click();
-
             previousBtnClassName = btnPrevious.getAttribute("class");
         }
         for (String string : listData) {
@@ -306,8 +305,6 @@ public class GeneralClass extends PageObject {
         System.out.println("First Page of Entries   " + minEntries);
 
         Assert.assertEquals(minEntries, String.valueOf(firstPageCount));
-
-
     }
 
     public void searchStudent(List<WebElement> studentData, WebElement nxtBtn, WebElementFacade lblNoData, WebElement searchStudent, WebElement filterResult) {

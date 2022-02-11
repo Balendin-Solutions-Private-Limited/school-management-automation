@@ -127,7 +127,7 @@ public class StudentPage extends PageObject {
     @FindBy(xpath = "//table[@id='studentList']/thead/tr/th[5]")
     private WebElement headerSchool;
 
-    @FindBy(xpath = "//select[@name='studentList_length']")
+    @FindBy(xpath = "//select[@class='custom-select custom-select-sm form-control form-control-sm']")
     private WebElement ddlShowEntries;
 
 

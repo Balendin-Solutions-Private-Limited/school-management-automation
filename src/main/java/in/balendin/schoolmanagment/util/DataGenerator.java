@@ -49,7 +49,7 @@ public class DataGenerator {
     }
 
     public String getOrg_ContactName() {
-        return faker.name().firstName();
+        return faker.name().firstName().replace("/[^a-zA-Z ]/g","");
     }
 
     public String getOrg_ContactNumber() {

@@ -1,10 +1,12 @@
 package in.balendin.schoolmanagment.steps;
 
+import in.balendin.schoolmanagment.pages.StudentPage;
 import in.balendin.schoolmanagment.pages.UserPage;
 import net.thucydides.core.annotations.Step;
 
 public class UserSteps {
     UserPage userPage;
+    StudentPage studentPage;
 
     boolean IsSchoolUser;
 
@@ -91,11 +93,63 @@ public class UserSteps {
     @Step("Admin is ale to sort role profile in ascending and descending order")
     public void adminIsAbleToSortRoleProfile(){
         userPage.navigateToUserList();
+
        userPage.sortUserByRoleProfile();
     }
 
     @Step("Admin is able to search user by name in user list")
     public void adminIsAbleToSearchUserByName(){
+        studentPage.select100Entries();
         userPage.searchUserByName();
+    }
+
+    @Step("Admin is able to search user by username in user list")
+    public void adminIsAbleToSearchUserByUsername(){
+        studentPage.select100Entries();
+        userPage.searchUserByUserName();
+    }
+
+    @Step("Admin is able to search user by email in user list")
+    public void adminIsAbleToSearchUserByEmail(){
+        studentPage.select100Entries();
+        userPage.searchUserByEmail();
+    }
+
+    @Step("Admin is able to search user by school or organization  in user list")
+    public void adminIsAbleToSearchUserBySchoolOrOrganization(){
+        studentPage.select100Entries();
+        userPage.searchUserBySchoolOrOrganization();
+    }
+
+    @Step("Admin is able to search user by contact number in user list")
+    public void adminIsAbleToSearchUserByContactNumber(){
+        studentPage.select100Entries();
+        userPage.searchUserByContactNumber();
+    }
+    @Step("Admin is able to search user by role profile in user list")
+    public void adminIsAbleToSearchUserByRoleProfile(){
+        studentPage.select100Entries();
+        userPage.searchUserByRoleProfile();
+    }
+    @Step("Admin is able to do pagination in user list")
+    public void adminIsAbleToDoPagination(){
+        studentPage.select100Entries();
+        userPage.doPaginationOnUserPage();
+    }
+    @Step("Verify admin is able to select  list Show Entries ")
+    public void verifyUserListShowEntryFunctionality() {
+        userPage.navigateToUserList();
+        userPage.verifyShowEntries(1);
+    }
+
+
+    @Step("Verify validation messages for mandatory fields for school and organization user")
+    public void validationMessageForMandatoryFieldsForOrganizationOrSchoolUser(){
+        userPage.verifyValidationMessageForMandatoryFields();
+    }
+
+    @Step("Verify admin is able to see validation message all form fields")
+    public void adminIsAbleToSeeAllFieldFormValidation(){
+        userPage.verifyValidationMessageForForm();
     }
 }

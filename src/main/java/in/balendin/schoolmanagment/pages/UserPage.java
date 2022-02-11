@@ -66,7 +66,7 @@ public class UserPage extends PageObject {
     private List<WebElement> ddlOrganizationCount;
 
     @FindBy(xpath = "//input[@name='UserType' and @value='3']")
-    private WebElement userTypeSchool;
+    private WebElementFacade userTypeSchool;
 
     @FindBy(xpath = "//input[@name='UserType' and @value='2']")
     private WebElement userTypeOrganization;
@@ -97,25 +97,28 @@ public class UserPage extends PageObject {
     private List<WebElement> ddlGenderList;
 
     @FindBy(id = "FirstName-error")
-    private WebElement validationMsgFirstName;
+    private WebElementFacade validationMsgFirstName;
+
+    @FindBy(id = "LastName-error")
+    private WebElementFacade validationMsgLastName;
 
     @FindBy(id = "UserName-error")
-    private WebElement validationMsgUsername;
+    private WebElementFacade validationMsgUsername;
 
     @FindBy(id = "Password-error")
-    private WebElement validationMsgPassword;
+    private WebElementFacade validationMsgPassword;
 
     @FindBy(id = "ConfirmPassword-error")
-    private WebElement validationMsgConfirmPassword;
+    private WebElementFacade validationMsgConfirmPassword;
 
     @FindBy(id = "Email-error")
-    private WebElement validationMsgEmail;
+    private WebElementFacade validationMsgEmail;
 
     @FindBy(id = "Mobile-error")
-    private WebElement validationMsgMobile;
+    private WebElementFacade validationMsgMobile;
 
     @FindBy(id = "RoleProfileId-error")
-    private WebElement validationMsgRoleProfile;
+    private WebElementFacade validationMsgRoleProfile;
 
     @FindBy(name = "Username")
     private WebElement txtUsername;
@@ -175,31 +178,50 @@ public class UserPage extends PageObject {
     private List <WebElement> emailList;
 
     @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[5]")
-    private List <WebElement> contactList;
+    private List <WebElement> schoolOrOrganizationList;
 
     @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[6]")
+    private List <WebElement> contactList;
+
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[7]")
     private List <WebElement> roleList;
 
 
-    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[2]")
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr[1]/td[2]")
     private WebElement filterNameList;
 
-    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[3]")
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr[1]/td[3]")
     private WebElement filterUsernameList;
 
-    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[4]")
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr[1]/td[4]")
     private WebElement filterEmailList;
 
-    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[5]")
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr[1]/td[5]")
+    private WebElement filterSchoolOrOrganizationList;
+
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr[1]/td[6]")
     private WebElement filterContactList;
 
-    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr/td[6]")
+    @FindBy(xpath = "//table[@id='DataTables_Table_0']/tbody/tr[1]/td[7]")
     private WebElement filterRoleList;
 
     @FindBy(id = "DataTables_Table_0_next")
     private WebElement nxtPageBtn;
 
+    @FindBy(xpath = "//div[@id='DataTables_Table_0_info']")
+    private WebElement paginationEntries;
 
+    @FindBy(id = "DataTables_Table_0_previous")
+    private WebElement previousBtn;
+
+    @FindBy(xpath = "//select[@name='DataTables_Table_0_length']//option")
+    private WebElementFacade showEntriesList;
+
+    @FindBy(id = "SchoolData")
+    private WebElement validationMessageSchool;
+
+    @FindBy(id = "OrganizationData")
+    private WebElement validationMessageOrganization;
 
 
 
@@ -422,7 +444,7 @@ public class UserPage extends PageObject {
     public void sortUserBySerialNumber(){
         String xpath  = "//table[@class='table table-bordered table-hover mtable dataTable no-footer dtr-inline']/tbody/tr/td[1]";
         generalClass.sortSrNoAscending(headerSerialNumber,xpath);
-        generalClass.sortNameDescending(headerSerialNumber,xpath);
+        generalClass.sortSrNoDescending(headerSerialNumber,xpath);
 
     }
 
@@ -463,7 +485,146 @@ public class UserPage extends PageObject {
     }
 
     public void searchUserByName(){
-        generalClass.searchStudent(nameList,nxtPageBtn,lblNoData,txtSearchBox,filterNameList);
+        navigateToUserList();
+        generalClass.searchSchool(nameList, nxtPageBtn, txtSearchBox, filterNameList);
+
+    }
+    public void searchUserByUserName(){
+        navigateToUserList();
+        generalClass.searchSchool(usernameList, nxtPageBtn, txtSearchBox, filterUsernameList);
+
+    }
+    public void searchUserByEmail(){
+        navigateToUserList();
+        generalClass.searchSchool(emailList, nxtPageBtn, txtSearchBox, filterEmailList);
+
+    }
+    public void searchUserBySchoolOrOrganization(){
+        navigateToUserList();
+        generalClass.searchSchool(schoolOrOrganizationList, nxtPageBtn, txtSearchBox, filterSchoolOrOrganizationList);
+    }
+    public void searchUserByContactNumber(){
+        navigateToUserList();
+        generalClass.searchSchool(contactList, nxtPageBtn, txtSearchBox, filterContactList);
+    }
+    public void searchUserByRoleProfile(){
+        navigateToUserList();
+        generalClass.searchSchool(roleList, nxtPageBtn, txtSearchBox, filterRoleList);
+    }
+
+    public void doPaginationOnUserPage(){
+        navigateToUserList();
+    generalClass.doPagination(nameList,nxtPageBtn,paginationEntries,previousBtn);
+    }
+    public void verifyShowEntries(int value) {
+        waitFor(5000);
+        if (!(value < 10)) {
+            System.out.println("show entry value called " + value);
+            String valueInString = String.valueOf(value);
+            showEntriesList.selectByVisibleText(valueInString);
+            String selectedValue = showEntriesList.getSelectedValue();
+            GeneralClass generalClass = new GeneralClass();
+            String numRows = "//table[@id='DataTables_Table_0']/tbody/tr";
+            generalClass.selectEntry(selectedValue, numRows);
+        } else {
+            System.out.println("show entry value not called " + value);
+            waitFor(5000);
+            GeneralClass generalClass = new GeneralClass();
+            String numRowXpath = "//table[@id='DataTables_Table_0']/tbody/tr";
+            String listOfShowEntries = "//select[@name='DataTables_Table_0_length']//option";
+            generalClass.seeList(showEntriesList, listOfShowEntries, numRowXpath);
+        }
+
+    }
+
+    public void verifyValidationMessageForMandatoryFields(){
+        navigateToAddUserForm();
+        clickOn(userTypeSchool);
+        clickOn(btnUserFormSubmit);
+        Assert.assertTrue(validationMessageSchool.getText().contains("Please Select School field"));
+
+        clickOn(userTypeOrganization);
+        clickOn(btnUserFormSubmit);
+        Assert.assertEquals(validationMessageOrganization.getText(),"Please Select Organization field");
+        Assert.assertEquals(validationMsgFirstName.getText(),"The First Name field is required.");
+        Assert.assertEquals(validationMsgUsername.getText(),"The Username field is required");
+        Assert.assertTrue(validationMsgEmail.getText().contains("The Email field is required"));
+        Assert.assertEquals(validationMsgPassword.getText(),"The Password field is required");
+        Assert.assertEquals(validationMsgConfirmPassword.getText(),"The Confirm Password field is required");
+        Assert.assertEquals(validationMsgMobile.getText(),"The Mobile field is required");
+        Assert.assertEquals(validationMsgRoleProfile.getText(),"Please Select Role Profile field");
+    }
+
+    public void verifyValidationMessageForForm(){
+        navigateToAddUserForm();
+        clickOn(userTypeSchool);
+        clickOn(btnUserFormSubmit);
+
+        clickOn(userTypeOrganization);
+        clickOn(btnUserFormSubmit);
+
+        txtFirstName.sendKeys("p",Keys.ENTER);
+        Assert.assertEquals(validationMsgFirstName.getText(),"Minimum 2 characters required!");
+        txtFirstName.sendKeys("123",Keys.ENTER);
+        Assert.assertEquals(validationMsgFirstName.getText(),"Allow only alphabets and spaces.");
+        txtFirstName.sendKeys("123",Keys.ENTER);
+        Assert.assertEquals(validationMsgFirstName.getText(),"Allow only alphabets and spaces.");
+        txtFirstName.sendKeys("p1245",Keys.ENTER);
+        Assert.assertEquals(validationMsgFirstName.getText(),"Allow only alphabets and spaces.");
+        typeInto(txtFirstName,"Pratik");
+        validationMsgFirstName.shouldNotBeVisible();
+
+        txtLastName.sendKeys("p",Keys.ENTER);
+        Assert.assertEquals(validationMsgLastName.getText(),"Minimum 2 characters required!");
+        txtLastName.sendKeys("123",Keys.ENTER);
+        Assert.assertEquals(validationMsgLastName.getText(),"Allow only alphabets and spaces.");
+        txtLastName.sendKeys("@#.&*()_++!$%^",Keys.ENTER);
+        Assert.assertEquals(validationMsgLastName.getText(),"Allow only alphabets and spaces.");
+        txtLastName.sendKeys("P123",Keys.ENTER);
+        Assert.assertEquals(validationMsgLastName.getText(),"Allow only alphabets and spaces.");
+        typeInto(txtLastName,"Bhaskar");
+        validationMsgLastName.shouldNotBeVisible();
+
+        txtUserName.sendKeys("p",Keys.ENTER);
+        Assert.assertEquals(validationMsgUsername.getText(),"Allow only alphanumeric characters, can not contain a space and special character");
+        txtUserName.clear();
+        txtUserName.sendKeys("123",Keys.ENTER);
+        Assert.assertEquals(validationMsgUsername.getText(),"Allow only alphanumeric characters, can not contain a space and special character");
+        txtUserName.sendKeys("@#.&*()_++!$%^",Keys.ENTER);
+        Assert.assertEquals(validationMsgUsername.getText(),"Allow only alphanumeric characters, can not contain a space and special character");
+        txtUserName.sendKeys("Pratik Bhaskar",Keys.ENTER);
+        Assert.assertEquals(validationMsgUsername.getText(),"Allow only alphanumeric characters, can not contain a space and special character");
+        typeInto(txtUserName,"Bhaskar");
+        validationMsgUsername.shouldNotBeVisible();
+
+        txtPassword.sendKeys("pratik",Keys.ENTER);
+        Assert.assertEquals(validationMsgPassword.getText(),"The Password must be at least 8 characters");
+        typeInto(txtPassword,"BhaskarPratik");
+        validationMsgPassword.shouldNotBeVisible();
+
+
+        txtConfirmPassword.sendKeys("pratikbhaskar",Keys.ENTER);
+        Assert.assertEquals(validationMsgConfirmPassword.getText(),"Please enter Confirm Password same as password");
+        typeInto(txtConfirmPassword,"BhaskarPratik");
+        validationMsgConfirmPassword.shouldNotBeVisible();
+
+        txtEmail.sendKeys("@pratikbhaskar",Keys.ENTER);
+        Assert.assertEquals(validationMsgEmail.getText(),"Please enter a vaild Email Address");
+        typeInto(txtEmail,"pratikbhakar@gmail.com");
+        validationMsgEmail.shouldNotBeVisible();
+
+        txtMobile.sendKeys("ghghgh",Keys.ENTER);
+        Assert.assertEquals(validationMsgMobile.getText(),"Please enter only digits.");
+        txtMobile.clear();
+        txtMobile.sendKeys("123456789",Keys.ENTER);
+        Assert.assertEquals(validationMsgMobile.getText(),"Minimum 10 digits required!");
+        txtMobile.clear();
+        txtMobile.sendKeys("12345645711",Keys.ENTER);
+        Assert.assertEquals(validationMsgMobile.getText(),"Maximum 10 digits required!");
+
+        typeInto(txtMobile,"1234564571");
+        validationMsgMobile.shouldNotBeVisible();
+
 
     }
 }
