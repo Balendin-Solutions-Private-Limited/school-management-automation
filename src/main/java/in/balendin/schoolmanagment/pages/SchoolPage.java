@@ -494,7 +494,6 @@ public class SchoolPage extends PageObject {
             generalClass.seeList(showEntriesList, listOfShowEntries, numRowXpath);
         }
 
-
     }
 
     public void verifyPagination() {
