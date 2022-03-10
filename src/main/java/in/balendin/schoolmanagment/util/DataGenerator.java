@@ -77,4 +77,16 @@ public class DataGenerator {
     public String getCourseName() {
         return faker.educator().course();
     }
+    public String generateUsername(){
+        return  getOrg_Title()+getOrg_ContactName();
+    }
+    public String generatePassword(){
+        return faker.internet().password();
+    }
+    public String generateEmail(){
+        return faker.internet().safeEmailAddress();
+    }
+    public String generateRoleName(){
+        return faker.company().profession();
+    }
 }
