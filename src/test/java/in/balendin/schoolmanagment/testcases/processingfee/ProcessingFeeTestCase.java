@@ -54,4 +54,55 @@ public class ProcessingFeeTestCase extends BaseTestCase {
     public void verifyExistingSchoolNameDisplayedInSelectSchoolDropdown() {
         feeSteps.verifyExistingSchoolNameDisplayedInSelectSchoolDropdown();
     }
+
+    @Test()
+    @Title("verify Search Processing Fee by its serial number")
+    public void verifySearchProcessingFeeBySrNumber() {
+        feeSteps.verifySearchProcessingFeeBySrNumber();
+    }
+    @Test()
+    @Title("verify Search Processing Fee by its School Name")
+    public void verifySearchProcessingFeeBySchoolName() {
+        feeSteps.verifySearchProcessingFeeBySchoolName();
+    }
+    @Test()
+    @Title("verify Search Processing Fee by its Payment Type")
+    public void verifySearchProcessingFeeByPaymentType() {
+        feeSteps.verifySearchProcessingFeeByPaymentType();
+    }
+    @Test()
+    @Title("verify Search Processing Fee by its Processing Fee")
+    public void verifySearchProcessingFeeByProcessingFee() {
+        feeSteps.verifySearchProcessingFeeByProcessingFee();
+    }
+    @Test()
+    @Title("verify Sort Processing Fee by its Sr Number Column")
+    public void verifySortProcessingFeeBySrNumberColumn() {
+        feeSteps.verifySortProcessingFeeBySrNumberColumn();
+    }
+    @Test()
+    @Title("verify Sort Processing Fee by School Name Column")
+    public void verifySortProcessingFeeSchoolNameColumn() {
+        feeSteps.verifySortProcessingFeeSchoolNameColumn();
+    }
+    @Test()
+    @Title("verify Sort Processing Fee by Payment Type Column")
+    public void verifySortProcessingFeePaymentTypeColumn() {
+        feeSteps.verifySortProcessingFeePaymentTypeColumn();
+    }
+    @Test()
+    @Title("verify Sort Processing Fee by Processing Fee Column")
+    public void verifySortProcessingFeeProcessingFeeColumn() {
+        feeSteps.verifySortProcessingFeeProcessingFeeColumn();
+    }
+    @Test()
+    @Title("verify Processing Fee List Show Entries functionality")
+    public void verifyProcessingFeeListShowEntriesFunctionality() {
+        feeSteps.verifyProcessingFeeListShowEntriesFunctionality();
+    }
+    @Test()
+    @Title("verify Processing Fee List Pagination functionality")
+    public void verifyProcessingFeeListPaginationFunctionality() {
+        feeSteps.verifyProcessingFeeListPaginationFunctionality();
+    }
 }

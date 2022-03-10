@@ -55,6 +55,11 @@ public class SchoolTestCase extends BaseTestCase {
     public void searchSchoolBySchoolName() {
         schoolSteps.verifySearchSchoolBySchoolName();
     }
+    @Test
+    @Title("Admin is able to search School By All Columns data")
+    public void searchSchoolByAllColumnData() {
+        schoolSteps.verifySearchSchoolByAllColumnData();
+    }
 
     @Test
     @Title("Admin is able to search School Sr Number")
@@ -81,7 +86,7 @@ public class SchoolTestCase extends BaseTestCase {
     }
 
     @Test
-    @Title("Verify Admin functionality student Show Entry count")
+    @Title("Verify Admin functionality School list Show Entry count")
     public void verifySchoolListShowEntryFunctionality() {
         schoolSteps.verifySchoolListShowEntryFunctionality();
     }
@@ -145,6 +150,4 @@ public class SchoolTestCase extends BaseTestCase {
     public void verifySchoolAddPageSelectOrgList() {
         schoolSteps.verifyAddSchoolSelectOrganizationFieldOptions();
     }
-
-
 }

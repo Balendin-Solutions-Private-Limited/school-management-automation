@@ -77,4 +77,9 @@ public class StudentSteps {
         studentPage.navigateToStudentList();
         studentPage.verifyTemplateDownloadAndImportStudentData();
     }
+    @Step("Verify Admin Import Student Supply")
+    public void verifyImportStudentSupply() {
+        studentPage.navigateToStudentList();
+        studentPage.importSupplyForStudent();
+    }
 }

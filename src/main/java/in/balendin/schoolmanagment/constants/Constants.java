@@ -11,4 +11,10 @@ public class Constants {
     public static final String HEADER_TEMP_EDIT_PAGE = "Edit Marketing Template";
     public static final String EMAIL_SUCCESS_MSG = "The Email Notification was saved successfully!";
     public static final String MYDOWNLOADS = "C:\\Users\\Admin\\Downloads";
+    // Course Module
+    public static final String COURSE_ERROR_SCHOOL = "Please select school field";
+    public static final String COURSE_ERROR_COURSE_NAME = "Please enter course name";
+    public static final String COURSE_ERROR_SEM_COUNT = "Please enter semester count";
+    public static final String COURSE_ERROR_SEM = "Please enter semester";
+
 }

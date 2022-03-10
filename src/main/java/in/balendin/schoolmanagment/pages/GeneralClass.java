@@ -163,10 +163,11 @@ public class GeneralClass extends PageObject {
         clickOn(showEntriesList);
         System.out.println("show entry value not called " + listXpath);
         List<WebElement> listDropdown = new ArrayList<>(getDriver().findElements(By.xpath(listOfShowEntries)));
-
+        System.out.println("vvvvvvvvvvvvvvvvvvvvv   "  + listDropdown.size());
         String value = null;
         System.out.println("show entry value not called " + listXpath);
         for (WebElement element : listDropdown) {
+            System.out.println("show entry value not called " + value);
             value = element.getText();
             element.click();
             List<WebElement> OrgListSize = getDriver().findElements(By.xpath(listXpath));
@@ -380,5 +381,51 @@ public class GeneralClass extends PageObject {
         Assert.assertTrue(filterResult.getText().contains(randomSchoolProperty));
     }
 
+    public void searchSchoolByAllData(List<WebElement> column1Data, List<WebElement> column2Data, List<WebElement> column3Data,
+                                      List<WebElement> column4Data, WebElement btnNext, WebElementFacade txtSearchBox, WebElementFacade filteredSchoolName) {
 
+
+        List<String> allTableData = new ArrayList<>();
+
+        for (WebElement element : column1Data) {
+            allTableData.add(element.getText());
+        }
+        for (WebElement element : column2Data) {
+            allTableData.add(element.getText());
+        }
+        for (WebElement element : column3Data) {
+            allTableData.add(element.getText());
+        }
+        for (WebElement element : column4Data) {
+            allTableData.add(element.getText());
+        }
+        String nxtBtnClassName = btnNext.getAttribute("class");
+        while (!nxtBtnClassName.contains("disabled")) {
+            btnNext.click();
+            for (WebElement element : column1Data) {
+                allTableData.add(element.getText());
+            }
+            for (WebElement element : column2Data) {
+                allTableData.add(element.getText());
+            }
+            for (WebElement element : column3Data) {
+                allTableData.add(element.getText());
+            }
+            for (WebElement element : column4Data) {
+                allTableData.add(element.getText());
+            }
+            System.out.println(" Test: " + allTableData);
+            nxtBtnClassName = btnNext.getAttribute("class");
+        }
+        int totalStudentListSize = allTableData.size();
+        System.out.println(" schoolListData 2:" + totalStudentListSize);
+
+        Random rand = new Random();
+        String randomSchoolProperty = allTableData.get(rand.nextInt(allTableData.size()));
+        System.out.println(" Select : " + randomSchoolProperty);
+
+        txtSearchBox.sendKeys(randomSchoolProperty);
+
+    }
 }
+

@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class SchoolPage extends PageObject {
@@ -28,7 +27,7 @@ public class SchoolPage extends PageObject {
     private WebElementFacade subTab_Organization;
 
     @FindBy(xpath = "//table[@id='OrganizationList']//tbody//tr//td[2]")
-    private  List<WebElementFacade> elementsAllOrgList;
+    private List<WebElementFacade> elementsAllOrgList;
 
     @FindBy(xpath = "//a[@type='button']")
     private WebElementFacade btn_Add;
@@ -82,11 +81,14 @@ public class SchoolPage extends PageObject {
     @FindBy(xpath = "//label[@for='IsPartPaymentAccepted']")
     private WebElementFacade checkPartPayment;
 
+    @FindBy(id = "PartPaymentPercentage")
+    private WebElementFacade partPayPercent;
+
     @FindBy(xpath = "//label[@for='IsChequeBoxesAccepted']")
     private WebElementFacade checkCheckBoxAccept;
 
     @FindBy(xpath = "//label[@for='IsHeadwisePartPaymentAccepted']")
-    private WebElementFacade checkHeadWisePatPayment;
+    private WebElementFacade checkHeadWisePartPayment;
 
     @FindBy(xpath = "//label[@for='ExamFeeMandatory']")
     private WebElementFacade checkExamFeeMandatory;
@@ -101,26 +103,26 @@ public class SchoolPage extends PageObject {
     private WebElementFacade checkMaintainStudentData;
 
     @FindBy(xpath = "//label[@for='AllowPayDirect']")
-    private WebElementFacade checkAllowPAyDirect;
+    private WebElementFacade checkAllowPayDirect;
 
     @FindBy(xpath = "//input[@id='submitSchool']")
     private WebElementFacade btn_Submit;
 
     // School List Page elements
     @FindBy(xpath = "//table[@id='SchoolList']/tbody/tr/td[3]")
-    private List<WebElement> schoolNameList;
+    private List<WebElement> schNameList;
 
     @FindBy(xpath = "//table[@id='SchoolList']/tbody/tr/td[1]")
     private List<WebElement> schoolSrNumberList;
 
     @FindBy(xpath = "//table[@id='SchoolList']/tbody/tr/td[4]")
-    private List<WebElement> schoolContactPersonList;
+    private List<WebElement> schContPersonList;
 
     @FindBy(xpath = "//table[@id='SchoolList']/tbody/tr/td[5]")
-    private List<WebElement> schoolContactPersonNumberList;
+    private List<WebElement> schContPersonNumList;
 
     @FindBy(xpath = "//table[@id='SchoolList']/tbody/tr/td[6]")
-    private List<WebElement> schoolCityList;
+    private List<WebElement> schCityList;
 
     @FindBy(id = "SchoolList_next")
     private WebElement btnNext;
@@ -246,7 +248,6 @@ public class SchoolPage extends PageObject {
     }
 
     public void createSchoolAndEditSchool(boolean createNewSchool) {
-
         if (createNewSchool) {
             navigateToCreateEditSchoolPage();
             select_Organization.selectByIndex(1);
@@ -258,10 +259,144 @@ public class SchoolPage extends PageObject {
         createSchool();
     }
 
+    public void manageSchoolProperties(boolean checkPartPay, boolean checkBoxAccept, boolean headPartPay,
+                                       boolean examFeeMand, boolean supplyMand, boolean prevSemMand, boolean maintainStuData,
+                                       boolean allowPayDir) {
+        if (checkPartPay) {
+            if (isCheckBoxEnabled("IsPartPaymentAccepted")) {
+                System.out.println("Part Payment already enabled");
+                typeInto(partPayPercent, "10");
+            } else {
+                clickOn(checkPartPayment);
+                typeInto(partPayPercent, "10");
+                System.out.println("Part Payment enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsPartPaymentAccepted")) {
+                clickOn(checkPartPayment);
+                System.out.println("Part Payment disabled");
+            } else {
+                System.out.println("Part Payment already disabled");
+            }
+        }
+        if (checkBoxAccept) {
+            if (isCheckBoxEnabled("IsChequeBoxesAccepted")) {
+                System.out.println("Check Box Accept already enabled");
+            } else {
+                clickOn(checkCheckBoxAccept);
+                System.out.println("Check Box Accept enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsChequeBoxesAccepted")) {
+                clickOn(checkCheckBoxAccept);
+                System.out.println("Check Box Accept disabled");
+            } else {
+                System.out.println("Check Box Accept already disabled");
+            }
+        }
+        if (headPartPay) {
+            if (isCheckBoxEnabled("IsHeadwisePartPaymentAccepted")) {
+                System.out.println("Head Wise PartPayment already enabled");
+            } else {
+                clickOn(checkHeadWisePartPayment);
+                System.out.println("Head Wise PartPayment enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsHeadwisePartPaymentAccepted")) {
+                clickOn(checkHeadWisePartPayment);
+                System.out.println("Head Wise PartPayment disabled");
+            } else {
+                System.out.println("Head Wise PartPayment already disabled");
+            }
+        }
+        if (examFeeMand) {
+            if (isCheckBoxEnabled("ExamFeeMandatory")) {
+                System.out.println("Exam Fee Mandatory already enabled");
+            } else {
+                clickOn(checkExamFeeMandatory);
+                System.out.println("ExamFee Mandatory enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("ExamFeeMandatory")) {
+                clickOn(checkExamFeeMandatory);
+                System.out.println("ExamFee Mandatory disabled");
+            } else {
+                System.out.println("ExamFee Mandatory already disabled");
+            }
+        }
+        if (supplyMand) {
+            if (isCheckBoxEnabled("IsSupplimentaryFeeCheckBoxAccepted")) {
+                System.out.println("Supplementary Fee already enabled");
+            } else {
+                clickOn(checkSupplyFeeMandatory);
+                System.out.println("Supplementary Fee enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsSupplimentaryFeeCheckBoxAccepted")) {
+                clickOn(checkSupplyFeeMandatory);
+                System.out.println("Supplementary Fee disabled");
+            } else {
+                System.out.println("Supplementary Fee already disabled");
+            }
+        }
+        if (prevSemMand) {
+            if (isCheckBoxEnabled("PreviousYearMandatory")) {
+                System.out.println("Previous Semester Mandatory  already enabled");
+            } else {
+                clickOn(checkPreviousSemMandatory);
+                System.out.println("Previous Semester Mandatory enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("PreviousYearMandatory")) {
+                clickOn(checkPreviousSemMandatory);
+                System.out.println("Previous Semester Mandatory disabled");
+            } else {
+                System.out.println("Previous Semester Mandatory already disabled");
+            }
+        }
+        if (maintainStuData) {
+            if (isCheckBoxEnabled("MaintainStudentData")) {
+                System.out.println("Maintain StudentData already enabled");
+            } else {
+                clickOn(checkMaintainStudentData);
+                System.out.println("Maintain StudentData enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("MaintainStudentData")) {
+                clickOn(checkMaintainStudentData);
+                System.out.println("Maintain StudentData disabled");
+            } else {
+                System.out.println("Maintain StudentData already disabled");
+            }
+        }
+        if (allowPayDir) {
+            if (isCheckBoxEnabled("AllowPayDirect")) {
+                System.out.println("Allow PayDirect already enabled");
+            } else {
+                clickOn(checkAllowPayDirect);
+                System.out.println("AllowPay Direct enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("AllowPayDirect")) {
+                clickOn(checkAllowPayDirect);
+                System.out.println("AllowPay Direct disabled");
+            } else {
+                System.out.println("Allow PayDirect already disabled");
+            }
+        }
+
+        clickOn(btn_Submit);
+        clickOn(btnPopupOk);
+        //Verify School Created
+        String schoolName = data.getTxt_Sch_Name();
+        String createdSchool = filteredSchoolName.getText();
+        Assert.assertEquals(schoolName, createdSchool);
+    }
+
     public void createSchool() {
         data = new SchoolData().generateSchoolData();
         typeInto(txt_SchName, data.getTxt_Sch_Name());
-        typeInto(txt_SchCode, data.getTxtSch_Code());
+        typeInto(txt_SchCode, data.getTxtSch_Code() + 1);
         typeInto(txt_SchDescription, data.getTxtSch_Description());
         file_SchLogo.sendKeys(data.getTxtSch_Logo());
         typeInto(txtSch_AddOne, data.getTxtSch_AddOne());
@@ -271,18 +406,19 @@ public class SchoolPage extends PageObject {
         typeInto(txtSch_Postal, String.valueOf(data.getTxtSch_Postal()));
         typeInto(txtSch_ContactName, data.getTxtSch_ContactName());
         typeInto(txtSch_ContactNumber, data.getTxtSch_ContactNumber());
-        clickOn(btn_Submit);
-        clickOn(btnPopupOk);
-        //Verify School Created
-        String schoolName = data.getTxt_Sch_Name();
-        String createdSchool = filteredSchoolName.getText();
-        Assert.assertEquals(schoolName, createdSchool);
+
     }
 
     public void createSchoolAndDeleteSchool() {
         navigateToCreateEditSchoolPage();
         select_Organization.selectByIndex(1);
         createSchool();
+        clickOn(btn_Submit);
+        clickOn(btnPopupOk);
+        //Verify School Created
+        String schoolName = data.getTxt_Sch_Name();
+        String createdSchool = filteredSchoolName.getText();
+        Assert.assertEquals(schoolName, createdSchool);
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
@@ -300,7 +436,7 @@ public class SchoolPage extends PageObject {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        generalClass.searchSchool(schoolNameList, btnNext, txtSearchBox, filteredSchoolName);
+        generalClass.searchSchool(schNameList, btnNext, txtSearchBox, filteredSchoolName);
     }
 
     public void searchSchoolBySrNumber() {
@@ -318,7 +454,7 @@ public class SchoolPage extends PageObject {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        generalClass.searchSchool(schoolContactPersonList, btnNext, txtSearchBox, filteredSchoolContactPersonName);
+        generalClass.searchSchool(schContPersonList, btnNext, txtSearchBox, filteredSchoolContactPersonName);
     }
 
     public void searchSchoolByContactPersonNumber() {
@@ -327,7 +463,7 @@ public class SchoolPage extends PageObject {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        generalClass.searchSchool(schoolContactPersonNumberList, btnNext, txtSearchBox, filteredSchoolContactPersonNameNumber);
+        generalClass.searchSchool(schContPersonNumList, btnNext, txtSearchBox, filteredSchoolContactPersonNameNumber);
     }
 
     public void searchSchoolBySchoolCity() {
@@ -336,7 +472,7 @@ public class SchoolPage extends PageObject {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        generalClass.searchSchool(schoolCityList, btnNext, txtSearchBox, filteredSchoolCity);
+        generalClass.searchSchool(schCityList, btnNext, txtSearchBox, filteredSchoolCity);
     }
 
     public void verifyShowEntries(int value) {
@@ -362,8 +498,7 @@ public class SchoolPage extends PageObject {
     }
 
     public void verifyPagination() {
-        generalClass.doPagination(schoolNameList, btnNext, schoolListInfo, btnPrevious);
-
+        generalClass.doPagination(schNameList, btnNext, schoolListInfo, btnPrevious);
     }
 
     public void sortSchoolNameColumn() {
@@ -435,30 +570,31 @@ public class SchoolPage extends PageObject {
 
     public void verifySchoolPageFields() {
         clickOn(btn_Submit);
-        txtSch_Postal.sendKeys("1234567",Keys.ENTER);
+
+        txtSch_Postal.sendKeys("1234567", Keys.ENTER);
         Assert.assertEquals(error_PostalCode.getText(), "Maximum 6 digits required!");
         typeInto(txtSch_Postal, "522330");
         error_PostalCode.shouldNotBeVisible();
 
-        txtSch_ContactNumber.sendKeys("TxtNumber@1#",Keys.ENTER);
+        txtSch_ContactNumber.sendKeys("TxtNumber@1#", Keys.ENTER);
         Assert.assertEquals(requiredContactNumber.getText(), "Please enter only digits.");
         txtSch_ContactNumber.clear();
-        txtSch_ContactNumber.sendKeys("12345678901",Keys.ENTER);
+        txtSch_ContactNumber.sendKeys("12345678901", Keys.ENTER);
         Assert.assertEquals(requiredContactNumber.getText(), "Maximum 10 digits required!");
         typeInto(txtSch_ContactNumber, "1234567890");
         requiredContactNumber.shouldNotBeVisible();
 
-        txtSch_City.sendKeys("Heloo@123",Keys.ENTER);
+        txtSch_City.sendKeys("Heloo@123", Keys.ENTER);
         Assert.assertEquals(requiredSchoolCity.getText(), "Allow only alphabets and spaces.");
         typeInto(txtSch_City, "Navi Mumbai");
         requiredSchoolCity.shouldNotBeVisible();
 
-        txtSch_ContactName.sendKeys("Heloo@123",Keys.ENTER);
+        txtSch_ContactName.sendKeys("Heloo@123", Keys.ENTER);
         Assert.assertEquals(requiredContactName.getText(), "Allow only alphabets and spaces.");
         typeInto(txtSch_ContactName, "YENDLURI");
         requiredContactName.shouldNotBeVisible();
 
-        txt_SchName.sendKeys("Heloo@123",Keys.ENTER);
+        txt_SchName.sendKeys("Heloo@123", Keys.ENTER);
         Assert.assertEquals(requiredSchoolName.getText(), "Allow only alphabets and spaces.");
         typeInto(txt_SchName, "RJ RJ");
         requiredSchoolName.shouldNotBeVisible();
@@ -492,5 +628,15 @@ public class SchoolPage extends PageObject {
         List<String> ddlOrgList = select_Organization_Options.stream().map(WebElement::getText).collect(Collectors.toList());
         ddlOrgList.remove(0);
         Assert.assertTrue(allOrgList.size() == ddlOrgList.size() && allOrgList.containsAll(ddlOrgList) && ddlOrgList.containsAll(allOrgList));
+    }
+
+    public boolean isCheckBoxEnabled(String checkBoxId) {
+        return getDriver().findElement(By.id(checkBoxId)).isSelected();
+    }
+
+    public void searchSchoolByAllData() {
+        Select select = new Select(getDriver().findElement(By.xpath("//select[@name='SchoolList_length']")));
+        select.selectByVisibleText("100");
+        generalClass.searchSchoolByAllData(schNameList, schContPersonList, schContPersonNumList,schCityList,btnNext,txtSearchBox, filteredSchoolName);
     }
 }

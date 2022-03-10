@@ -2,6 +2,7 @@ package in.balendin.schoolmanagment.steps;
 
 import in.balendin.schoolmanagment.pages.ProcessingFeePage;
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.annotations.Title;
 
 public class ProcessingFeeSteps {
 
@@ -21,7 +22,6 @@ public class ProcessingFeeSteps {
         feePage.navigateToProcessingFeeList();
         feePage.editProcessingFee();
     }
-
     @Step("This step will verify Delete ProcessingFee")
     public void verifyDeleteProcessingFee() {
         feePage.navigateToProcessingFeeList();
@@ -34,5 +34,57 @@ public class ProcessingFeeSteps {
         feePage.navigateToProcessingFeeForm();
         feePage.verifyExistingSchoolNameDisplayedInSelectSchoolDropdown(organization);
 
+    }
+    @Step(" This step will verify Search Processing Fee by its serial number")
+    public void verifySearchProcessingFeeBySrNumber() {
+        feePage.navigateToProcessingFeeList();
+        feePage.searchProcessingFeeBySrNumber();
+    }
+    @Step(" This step will verify Search Processing Fee by its School Name")
+    public void verifySearchProcessingFeeBySchoolName() {
+        feePage.navigateToProcessingFeeList();
+        feePage.searchProcessingFeeBySchoolName();
+
+    }
+    @Step(" This step will verify Search Processing Fee by its Payment type")
+    public void verifySearchProcessingFeeByPaymentType() {
+        feePage.navigateToProcessingFeeList();
+        feePage.searchProcessingFeeByPaymentType();
+    }
+    @Step(" This step will verify Search Processing Fee by its Processing Fee")
+    public void verifySearchProcessingFeeByProcessingFee() {
+        feePage.navigateToProcessingFeeList();
+        feePage.searchProcessingFeeByProcessingFeeValue();
+    }
+
+    @Step(" This step will verify Sort Processing Fee by its Sr Number column")
+    public void verifySortProcessingFeeBySrNumberColumn() {
+        feePage.navigateToProcessingFeeList();
+        feePage.sortProcessingFeeSrNumberColumn();
+    }
+    @Step(" This step will verify Sort Processing Fee by its School Name column")
+    public void verifySortProcessingFeeSchoolNameColumn() {
+        feePage.navigateToProcessingFeeList();
+        feePage.sortProcessingFeeSchoolNameColumn();
+    }
+    @Step(" This step will verify Sort Processing Fee by its Payment Type column")
+    public void verifySortProcessingFeePaymentTypeColumn() {
+        feePage.navigateToProcessingFeeList();
+        feePage.sortProcessingFeePaymentTypeColumn();
+    }
+    @Step(" This step will verify Sort Processing Fee by its Processing Fee column")
+    public void verifySortProcessingFeeProcessingFeeColumn() {
+        feePage.navigateToProcessingFeeList();
+        feePage.sortProcessingFeeColumn();
+    }
+    @Step(" This step will verify  Processing Fee List Show entries functionality")
+    public void verifyProcessingFeeListShowEntriesFunctionality() {
+        feePage.navigateToProcessingFeeList();
+        feePage.verifyShowEntries(5);
+    }
+    @Step(" This step will verify  Processing Fee List Pagination functionality")
+    public void verifyProcessingFeeListPaginationFunctionality() {
+        feePage.navigateToProcessingFeeList();
+        feePage.verifyPagination();
     }
 }

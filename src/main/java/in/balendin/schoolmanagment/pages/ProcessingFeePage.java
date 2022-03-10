@@ -83,8 +83,14 @@ public class ProcessingFeePage extends PageObject {
     @FindBy(xpath = "//button[@class='swal2-confirm swal2-styled']")
     private WebElementFacade btn_ProcessingFee_OK;
 
-    @FindBy(xpath = "//a[normalize-space()='Next']")
+    @FindBy(id = "SchoolProcessingList_next")
     private WebElementFacade btn_Next;
+
+    @FindBy(id = "SchoolProcessingList_previous")
+    private WebElementFacade btnPrevious;
+
+    @FindBy(xpath = "//div[@id='SchoolProcessingList_info']")
+    private WebElementFacade feeListInfo;
 
     @FindBy(xpath = "//tr[1]/td[2]")
     private WebElementFacade schoolName;
@@ -92,28 +98,47 @@ public class ProcessingFeePage extends PageObject {
     @FindBy(xpath = "//button[normalize-space()='Yes, delete it!']")
     private WebElementFacade btnYesDeleteIt;
 
-
-
     @FindBy(xpath = "//input[@type='search']")
     private WebElementFacade search_Field;
 
-    @FindBy(xpath = "//select[@name='SchoolProcessingList_length']")
+    @FindBy(xpath = "//select[@name='SchoolProcessingList_length']//option")
     private WebElementFacade showEntriesList;
 
-    @FindBy(xpath = "//option[@value='10']")
-    private WebElementFacade ShowEntriesValue10;
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[1]")
+    private List<WebElement> ProcessingFeeSrNumColumn;
 
-    @FindBy(xpath = "//option[@value='25']")
-    private WebElementFacade ShowEntriesValue25;
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr[1]/td[1]")
+    private WebElementFacade filteredSrNumber;
 
-    @FindBy(xpath = "//option[@value='50']")
-    private WebElementFacade ShowEntriesValue50;
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[2]")
+    private List<WebElement> ProcessingFeeSchoolColumn;
 
-    @FindBy(xpath = "//option[@value='100']")
-    private WebElementFacade ShowEntriesValue100;
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr[1]/td[2]")
+    private WebElementFacade filteredSchoolName;
 
-    @FindBy(xpath = "//th[@aria-label='Organization Name: activate to sort column ascending']")
-    private WebElementFacade Org_Name_Header;
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[3]")
+    private List<WebElement> ProcessingFeePaymentTypeColumn;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr[1]/td[3]")
+    private WebElementFacade filteredPaymentType;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[4]")
+    private List<WebElement> ProcessingFeeColumn;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/tbody/tr[1]/td[4]")
+    private WebElementFacade filteredProcessingFee;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/thead/tr/th[1]")
+    private WebElementFacade headerSrNum;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/thead/tr/th[2]")
+    private WebElementFacade headerSchoolName;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/thead/tr/th[3]")
+    private WebElementFacade headerProcessingFeeType;
+
+    @FindBy(xpath = "//table[@id='SchoolProcessingList']/thead/tr/th[3]")
+    private WebElementFacade headerProcessingFee;
 
     GeneralClass generalClass = new GeneralClass();
 
@@ -155,12 +180,10 @@ public class ProcessingFeePage extends PageObject {
         Assert.assertEquals(PaymentType.getText(), ProcessingFeeType);
         Assert.assertEquals(ProcessingFee.getText(), "50");
     }
-
     public void verifyProcessingFeeCreated() {
         Assert.assertEquals(ProcessingFee_SuccessMsg.getText(), FEE_SUCCESS);
         btn_ProcessingFee_OK.click();
     }
-
     public void editProcessingFee() {
         WebElement createdOrg = getDriver().findElement(By.xpath("//td[text()='" + schoolName.getText() + "']/parent::*/child::td[5]/a"));
         createdOrg.click();
@@ -169,7 +192,6 @@ public class ProcessingFeePage extends PageObject {
         clickOn(btn_Submit);
         clickOn(btn_ProcessingFee_OK);
     }
-
     public void deleteProcessingFee() {
         if (txtNoData.isDisplayed()){
             System.out.println("No data available in table");
@@ -180,7 +202,6 @@ public class ProcessingFeePage extends PageObject {
             clickOn(btnOk);
         }
     }
-
     public void deleteProcessingFeeAllItems() {
         //    showEntriesList.selectByIndex(3);
         if (txtNoData.isDisplayed()) {
@@ -190,7 +211,6 @@ public class ProcessingFeePage extends PageObject {
             generalClass.deleteAllItems(showEntriesList, listOfItems);
         }
     }
-
     public void verifyExistingSchoolNameDisplayedInSelectSchoolDropdown(String feeType) {
         Select s = new Select(select_School);
         int totalEntries = getDriver().findElements(By.xpath("//select//option")).size();
@@ -224,5 +244,59 @@ public class ProcessingFeePage extends PageObject {
         for (WebElement schoolNames : listOfDropdown){
             Assert.assertNotEquals(selectedSchool, schoolNames.getText());
         }
+    }
+    public void searchProcessingFeeBySrNumber() {
+        generalClass.searchSchool(ProcessingFeeSrNumColumn, btn_Next, txtSearchBox, filteredSrNumber);
+    }
+    public void searchProcessingFeeBySchoolName() {
+        generalClass.searchSchool(ProcessingFeeSchoolColumn, btn_Next, txtSearchBox, filteredSchoolName);
+    }
+    public void searchProcessingFeeByPaymentType() {
+        generalClass.searchSchool(ProcessingFeePaymentTypeColumn, btn_Next, txtSearchBox, filteredPaymentType);
+    }
+    public void searchProcessingFeeByProcessingFeeValue() {
+        generalClass.searchSchool(ProcessingFeeColumn, btn_Next, txtSearchBox, filteredProcessingFee);
+    }
+    public void sortProcessingFeeSrNumberColumn() {
+        String xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[1]";
+        generalClass.sortSrNoAscending(headerSrNum, xpath);
+        generalClass.sortSrNoDescending(headerSrNum, xpath);
+    }
+    public void sortProcessingFeeSchoolNameColumn() {
+        String xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[2]";
+        generalClass.sortNameAscending(headerSchoolName, xpath);
+        generalClass.sortNameDescending(headerSchoolName, xpath);
+    }
+    public void sortProcessingFeePaymentTypeColumn() {
+        String xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[3]";
+        generalClass.sortNameAscending(headerProcessingFeeType, xpath);
+        generalClass.sortNameDescending(headerProcessingFeeType, xpath);
+    }
+    public void sortProcessingFeeColumn() {
+        String xpath = "//table[@id='SchoolProcessingList']/tbody/tr/td[4]";
+        generalClass.sortSrNoAscending(headerProcessingFee, xpath);
+        generalClass.sortSrNoDescending(headerProcessingFee, xpath);
+    }
+    public void verifyShowEntries(int value) {
+        waitFor(5000);
+        if (!(value < 10)) {
+            System.out.println("show entry value called " + value);
+            String valueInString = String.valueOf(value);
+            showEntriesList.selectByVisibleText(valueInString);
+            String selectedValue = showEntriesList.getSelectedValue();
+            GeneralClass generalClass = new GeneralClass();
+            String numRows = "//table[@id='SchoolProcessingList']/tbody/tr";
+            generalClass.selectEntry(selectedValue, numRows);
+        } else {
+            System.out.println("show entry value not called " + value);
+            waitFor(5000);
+            GeneralClass generalClass = new GeneralClass();
+            String numRowXpath = "//table[@id='SchoolProcessingList']/tbody/tr";
+            String listOfShowEntries = "//select[@name='SchoolProcessingList_length']//option";
+            generalClass.seeList(showEntriesList, listOfShowEntries, numRowXpath);
+        }
+    }
+    public void verifyPagination() {
+        generalClass.doPagination(ProcessingFeeSchoolColumn, btn_Next, feeListInfo, btnPrevious);
     }
 }

@@ -1,27 +1,31 @@
 package in.balendin.schoolmanagment.pages;
 
+import com.github.javafaker.Faker;
 import in.balendin.schoolmanagment.models.StudentData;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.pages.PageObject;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.server.handler.GoBack;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 import static in.balendin.schoolmanagment.constants.Constants.MYDOWNLOADS;
@@ -94,11 +98,11 @@ public class StudentPage extends PageObject {
     @FindBy(css = "#studentList>tbody>tr>td:nth-child(5)")
     private List<WebElement> studentSchoolNameList;
 
-   @FindBy(xpath = "//div[@id='studentList_filter']/label/input")
+    @FindBy(xpath = "//div[@id='studentList_filter']/label/input")
     private WebElement searchStudent;
 
     @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[1]")
-            private  WebElement filterResultAdmissionNumber;
+    private WebElement filterResultAdmissionNumber;
 
     @FindBy(xpath = "//table[@id='studentList']/tbody/tr/td[2]")
     private WebElement filterResultStudentName;
@@ -128,67 +132,70 @@ public class StudentPage extends PageObject {
     private WebElement headerSchool;
 
     @FindBy(xpath = "//select[@name='studentList_length']")
-            private WebElement ddlShowEntries;
+    private WebElement ddlShowEntries;
 
+    @FindBy(xpath = "//a[@id='goBackHref']")
+    private WebElement labelGoBack;
 
 
     GeneralClass generalClass;
-
-    public void navigateToStudentList(){
+    String selectedSchoolName;
+    public void navigateToStudentList() {
         clickOn(studentTab);
         clickOn(importStudent);
         String Title = getTitle();
         Assert.assertTrue(Title.contains("Student List"));
     }
 
-    public void select100Entries(){
+    public void select100Entries() {
         waitFor(5000);
         Select entries = new Select(ddlShowEntries);
         entries.selectByValue("100");
     }
 
-    public void searchStudentAdmissionNumber(){
-        generalClass.searchStudent(admissionNumberList,nxtPageBtn,lblNoData,searchStudent,filterResultAdmissionNumber);
-
-    }
-    public void searchStudentByStudentName(){
-        generalClass.searchStudent(studentNameList,nxtPageBtn,lblNoData,searchStudent,filterResultStudentName);
-    }
-
-    public void searchStudentByDOB(){
-        generalClass.searchStudent(studentDOBList,nxtPageBtn,lblNoData,searchStudent,filterResultStudentDOB);
-
-    }
-    public void searchStudentsAccordingToSchool(){
-        generalClass.searchStudent(studentSchoolNameList,nxtPageBtn,lblNoData,searchStudent,filterResultStudentSchoolList);
+    public void searchStudentAdmissionNumber() {
+        generalClass.searchStudent(admissionNumberList, nxtPageBtn, lblNoData, searchStudent, filterResultAdmissionNumber);
 
     }
 
-    public void sortAdmissionNumber(){
-        String xpath  ="//table[@id='studentList']/tbody/tr/td[1]";
-        generalClass.sortStudentPageAscending(headerAdmissionNumber,xpath);
-        generalClass.sortStudentPageDescending(headerAdmissionNumber,xpath);
+    public void searchStudentByStudentName() {
+        generalClass.searchStudent(studentNameList, nxtPageBtn, lblNoData, searchStudent, filterResultStudentName);
     }
-    public void sortStudentName(){
 
-        String xpath  ="//table[@id='studentList']/tbody/tr/td[2]";
-        generalClass.sortStudentPageAscending(headerStudentName,xpath);
-        generalClass.sortStudentPageDescending(headerStudentName,xpath);
+    public void searchStudentByDOB() {
+        generalClass.searchStudent(studentDOBList, nxtPageBtn, lblNoData, searchStudent, filterResultStudentDOB);
 
-        }
+    }
 
-    public void sortStudentDOB(){
-        String xpath  ="//table[@id='studentList']/tbody/tr/td[3]";
-        generalClass.sortStudentPageAscending(headerStudentDOB,xpath);
-        generalClass.sortStudentPageDescending(headerStudentDOB,xpath);
+    public void searchStudentsAccordingToSchool() {
+        generalClass.searchStudent(studentSchoolNameList, nxtPageBtn, lblNoData, searchStudent, filterResultStudentSchoolList);
+
+    }
+
+    public void sortAdmissionNumber() {
+        String xpath = "//table[@id='studentList']/tbody/tr/td[1]";
+        generalClass.sortStudentPageAscending(headerAdmissionNumber, xpath);
+        generalClass.sortStudentPageDescending(headerAdmissionNumber, xpath);
+    }
+
+    public void sortStudentName() {
+
+        String xpath = "//table[@id='studentList']/tbody/tr/td[2]";
+        generalClass.sortStudentPageAscending(headerStudentName, xpath);
+        generalClass.sortStudentPageDescending(headerStudentName, xpath);
+
+    }
+
+    public void sortStudentDOB() {
+        String xpath = "//table[@id='studentList']/tbody/tr/td[3]";
+        generalClass.sortStudentPageAscending(headerStudentDOB, xpath);
+        generalClass.sortStudentPageDescending(headerStudentDOB, xpath);
 
     }
 
 
     public void verifyShowEntries(int value) {
-
         selectSchool();
-
         waitFor(5000);
         if (!(value < 10)) {
             String valueInString = String.valueOf(value);
@@ -203,49 +210,20 @@ public class StudentPage extends PageObject {
             String OrgListXpath = "//table[@id='studentList']/tbody/tr/td[1]";
             String listOfShowEntries = "//select[@name='studentList_length']//option";
             generalClass.seeList(showEntriesList, listOfShowEntries, OrgListXpath);
-
         }
-
-
     }
-
 
     public void verifyPagination() {
         Select school = new Select(ddlSchool);
         school.selectByVisibleText("BALENDIN VIJ");
-      //  selectSchool();
+        //  selectSchool();
         GeneralClass generalClass = new GeneralClass();
-        generalClass.doPagination(studentNamesList, btnNext, showingEntries,btnPrevious);
-
+        generalClass.doPagination(studentNamesList, btnNext, showingEntries, btnPrevious);
     }
 
     public void verifyTemplateDownloadAndImportStudentData() {
 
-        clickOn(downloadFile);
-
-        Robot robot = null;
-
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-        robot.getAutoDelay();
-        robot.keyPress(KeyEvent.VK_DOWN);
-        robot.delay(2000);
-
-        robot.keyPress(KeyEvent.VK_DOWN);
-        robot.delay(2000);
-
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.delay(2000);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        downloadTemplate();
         XSSFWorkbook workbook = null;
         XSSFSheet sheet;
         String downloadedFile = Objects.requireNonNull(getLatestFile(MYDOWNLOADS)).getAbsolutePath();
@@ -291,6 +269,9 @@ public class StudentPage extends PageObject {
                 Cell Stu_CourseCode = empRow.createCell(17);
                 Stu_CourseCode.setCellValue(data.getStu_Course_Code());
 
+
+                Cell semester = empRow.createCell(20);
+                semester.setCellValue(1);
 
                 Cell term1Fee = empRow.createCell(29);
                 term1Fee.setCellValue(feeAmount);
@@ -369,12 +350,153 @@ public class StudentPage extends PageObject {
 
     }
 
+    public void importSupplyForStudent() {
+        Select school = new Select(ddlSchool);
+        school.selectByIndex(generateRandomNumber());
+        while (lblNoData.containsText("No data available in table")) {
+            school.selectByIndex(generateRandomNumber());
+            selectedSchoolName = school.getFirstSelectedOption().getText();
+            System.out.println(" Selected School FFF : " + selectedSchoolName);
+        }
+        System.out.println("selectedSchoolName MMM : " + selectedSchoolName);
+        //  List<String> supply_Students = new ArrayList<>();
+
+        String student = filterResultStudentName.getText();
+        String addNum = filterResultAdmissionNumber.getText();
+
+        System.out.println("student name " + student);
+        clickOn(getDriver().findElement(By.xpath("//td[text()='" + student + "']/parent::*/child::td[6]//a[@title='Edit']")));
+        String courseName = getDriver().findElement(By.xpath("//input[@id='StudentCourseView_Id']//parent::div//h6")).getText();
+        String semester = getDriver().findElement(By.xpath("//label[@for='Semester']//parent::div//h6")).getText();
+        int updatedSem;
+        switch (semester) {
+            case "":
+                int addsOn = 1;
+                updatedSem = addsOn;
+                break;
+            case "1":
+                updatedSem = 1;
+                break;
+            default:
+                int negative = -1;
+                updatedSem = Integer.parseInt(semester) + negative;
+        }
+
+        String regex = "^([^()]*)\\(([^()]*)\\)(.*)$";
+        Pattern pattern = Pattern.compile(regex);
+
+        Matcher matcher = pattern.matcher(courseName);
+        if (matcher.matches()) {
+
+            String txtCourse = matcher.group(1).trim();
+            String txtCourseCode = matcher.group(2).trim();
+            String txtCourseSem = matcher.group(2).trim();
+            System.out.println("111111111111111  " + txtCourse);
+            System.out.println("222222222222222  " + txtCourseCode);
+            System.out.println("333333333333333  " + txtCourseSem);
+            System.out.println("444444444444444  " + courseName);
+
+
+            clickOn(labelGoBack);
+            downloadTemplate();
+            XSSFWorkbook workbook = null;
+            XSSFSheet sheet;
+            String downloadedFile = Objects.requireNonNull(getLatestFile(MYDOWNLOADS)).getAbsolutePath();
+            try {
+
+                FileInputStream file = new FileInputStream(downloadedFile);
+                workbook = new XSSFWorkbook(file);
+                sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
+                StudentData data = new StudentData();
+                String feeAmount = "500";
+
+                for (int i = 1; i < 5; i++) {
+                    Faker feker;
+                    //Get the count in sheet
+                    int rowCount = sheet.getLastRowNum() + 1;
+                    Row empRow = sheet.createRow(rowCount);
+
+                    Cell Admission_Num = empRow.createCell(0);
+                    Admission_Num.setCellValue(addNum);
+
+                    Cell Stu_Name = empRow.createCell(1);
+                    Stu_Name.setCellValue(student);
+
+
+          /*          Cell Stu_Mobile = empRow.createCell(4);
+                    Stu_Mobile.setCellValue(data.getStu_Mobile_Num());*/
+
+                    Cell Stu_Mail = empRow.createCell(5);
+                    Stu_Mail.setCellValue(data.getStu_Email());
+
+                    Cell Stu_Course = empRow.createCell(16);
+                    Stu_Course.setCellValue(txtCourse);
+
+                    Cell Stu_CourseCode = empRow.createCell(17);
+                    Stu_CourseCode.setCellValue(txtCourseCode + 1);
+
+
+                    Cell semesterCell = empRow.createCell(20);
+                    semesterCell.setCellValue(updatedSem);
+
+                    Cell ExamType = empRow.createCell(28);
+                    ExamType.setCellValue("Supplementary");
+
+                    Cell subCode = empRow.createCell(25);
+                    subCode.setCellValue(data.getSubject() + 001);
+
+                    Cell subject = empRow.createCell(26);
+                    subject.setCellValue(data.getSubject());
+
+                    Cell ExamFee = empRow.createCell(34);
+                    ExamFee.setCellValue(feeAmount);
+                    System.out.println(i);
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                //Write the workbook in file system
+                FileOutputStream out = new FileOutputStream(new
+                        File(downloadedFile));
+                workbook.write(out);
+                out.close();
+                System.out.println("Update Successfully");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        btnBulkImport.waitUntilEnabled();
+        clickOn(btnBulkImport);
+        clickOn(btnStepNext);
+        System.out.println("selectedSchoolName LLL   " + selectedSchoolName);
+        selectSchoolDropdown.selectByVisibleText(selectedSchoolName);
+        String latestFile = getLatestFile(MYDOWNLOADS).getAbsolutePath();
+        WebElement fileExcel = getDriver().findElement(By.xpath("//div/input[@name='excelFile' and @id = 'excelFile']"));
+        fileExcel.sendKeys(latestFile);
+        importStu_Submit.click();
+        Assert.assertTrue(StudentImportMessage.getText().contains("Students has been imported."));
+
+
+    }
+
     public void selectSchool() {
         Select school = new Select(ddlSchool);
         school.selectByIndex(generateRandomNumber());
-        System.out.println(" 1st " + school.getFirstSelectedOption().getText());
         while (lblNoData.containsText("No data available in table")) {
             school.selectByIndex(generateRandomNumber());
+            System.out.println(" Selected School : " + school.getFirstSelectedOption().getText());
         }
 
     }
@@ -387,7 +509,6 @@ public class StudentPage extends PageObject {
         return ind;
 
     }
-
 
     private File getLatestFile(String dirPath) {
         File dir = new File(dirPath);
@@ -403,6 +524,32 @@ public class StudentPage extends PageObject {
             }
         }
         return lastModifiedFile;
+    }
+
+    public void downloadTemplate() {
+        clickOn(downloadFile);
+        Robot robot = null;
+
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        robot.getAutoDelay();
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.delay(2000);
+
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.delay(2000);
+
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.delay(2000);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void waitForElement(WebElement element) {

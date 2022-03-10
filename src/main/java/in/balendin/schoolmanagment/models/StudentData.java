@@ -149,6 +149,9 @@ public class StudentData {
     public String getStu_Course() {
         return faker.educator().course();
     }
+    public String getSubject() {
+        return faker.educator().course();
+    }
 
     public String getStu_Course_Code() {
         return faker.educator().course() + "001";

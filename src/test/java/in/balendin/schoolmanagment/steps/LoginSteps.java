@@ -10,9 +10,7 @@ import static net.serenitybdd.core.Serenity.getDriver;
 
 public class LoginSteps  {
 
-
     LoginPage loginPage;
-
 
     @Step("Login to application as super admin")
     public void loginAsSuperAdmin(){

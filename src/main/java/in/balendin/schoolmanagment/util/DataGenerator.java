@@ -71,4 +71,10 @@ public class DataGenerator {
         String randomNumbers = RandomStringUtils.randomNumeric(5);
         return 79393 + randomNumbers;
     }
+
+    // Course Data
+
+    public String getCourseName() {
+        return faker.educator().course();
+    }
 }

@@ -91,7 +91,12 @@ public class StudentTestCase extends BaseTestCase {
     public void verifyTemplateDownloadAndImportStudentData(){
         studentSteps.verifyTemplateDownloadAndImportStudentData();
     }
-// hi
+    @Test
+    @Title("Verify Admin Student Template download and Import Student Data")
+    public void supplyImport(){
+        studentSteps.verifyImportStudentSupply();
+    }
+
 
 
 }

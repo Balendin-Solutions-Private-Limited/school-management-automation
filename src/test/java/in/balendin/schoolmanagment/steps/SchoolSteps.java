@@ -7,15 +7,20 @@ public class SchoolSteps {
 
     SchoolPage schoolPage;
     boolean createNewSchool;
+    boolean checkPartPay, checkBoxAccept, headPartPay, examFeeMand, supplyMand, prevSemMand, maintainStuData, allowPayDir;
 
     @Step("Verify admin are able to create School")
     public void verifyAdminIsAbleToCreateSchool() {
         schoolPage.createSchoolAndEditSchool(createNewSchool = true);
+        schoolPage.manageSchoolProperties(checkPartPay=true, checkBoxAccept=true, headPartPay=true, examFeeMand=true,
+                                         supplyMand=true, prevSemMand=true, maintainStuData=true, allowPayDir=true);
     }
 
     @Step("Verify admin are able to Update School")
     public void verifyAdminIsAbleToUpdateSchool() {
         schoolPage.createSchoolAndEditSchool(createNewSchool = false);
+        schoolPage.manageSchoolProperties(checkPartPay=true, checkBoxAccept=true, headPartPay=true, examFeeMand=true,
+                supplyMand=true, prevSemMand=true, maintainStuData=true, allowPayDir=true);
     }
 
     @Step("Verify admin are able to Delete School")
@@ -118,4 +123,8 @@ public class SchoolSteps {
         schoolPage.verifyOrganizationListForSelectOrganizationField();
     }
 
+    public void verifySearchSchoolByAllColumnData() {
+        schoolPage.navigateToSchoolListPage();
+        schoolPage.searchSchoolByAllData();
+    }
 }
