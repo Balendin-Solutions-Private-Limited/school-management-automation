@@ -142,7 +142,7 @@ public class StudentPage extends PageObject {
     }
 
     public void select100Entries(){
-        waitFor(5000);
+        waitFor(50000);
         Select entries = new Select(ddlShowEntries);
         entries.selectByValue("100");
     }
@@ -181,7 +181,6 @@ public class StudentPage extends PageObject {
         String xpath  ="//table[@id='studentList']/tbody/tr/td[3]";
         generalClass.sortStudentPageAscending(headerStudentDOB,xpath);
         generalClass.sortStudentPageDescending(headerStudentDOB,xpath);
-
     }
 
 

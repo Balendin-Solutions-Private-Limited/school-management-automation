@@ -82,4 +82,8 @@ public class DataGenerator {
         return  getOrg_Title()+getOrg_ContactName();
     }
 
+    public String generateRoleName(){
+        return faker.company().profession();
+    }
+
 }
