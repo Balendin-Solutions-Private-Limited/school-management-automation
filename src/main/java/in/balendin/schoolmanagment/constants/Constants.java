@@ -10,7 +10,8 @@ public class Constants {
     public static final String FEE_SUCCESS = "The processing fee was created successfully!";
     public static final String HEADER_TEMP_EDIT_PAGE = "Edit Marketing Template";
     public static final String EMAIL_SUCCESS_MSG = "The Email Notification was saved successfully!";
-    public static final String MYDOWNLOADS = "C:\\Users\\Admin\\Downloads";
+    private static final String home= System.getProperty("user.home"); ;
+    public static final String MYDOWNLOADS = home+"\\Downloads";
     // Course Module
     public static final String COURSE_ERROR_SCHOOL = "Please select school field";
     public static final String COURSE_ERROR_COURSE_NAME = "Please enter course name";

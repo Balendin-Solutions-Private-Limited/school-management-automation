@@ -33,7 +33,6 @@ public class OrganizationTestCase extends BaseTestCase {
     public void createOrganization() {
         organizationSteps.navigateToOrganizationForm();
         organizationSteps.createOrganization();
-        organizationSteps.verifyOrganizationCreate();
     }
 
     @Test()

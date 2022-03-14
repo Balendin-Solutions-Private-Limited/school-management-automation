@@ -185,8 +185,37 @@ public class AddOrganizationPage extends PageObject {
     @FindBy(name = "OrganizationList_length")
     private WebElement showEntriesDropdown;
 
+    // checkboxes elements
+    @FindBy(xpath = "//label[@for='IsPartPaymentAccepted']")
+    private WebElementFacade checkPartPayment;
+
+    @FindBy(id = "PartPaymentPercentage")
+    private WebElementFacade partPayPercent;
+
+    @FindBy(xpath = "//label[@for='IsChequeBoxesAccepted']")
+    private WebElementFacade checkCheckBoxAccept;
+
+    @FindBy(xpath = "//label[@for='IsHeadwisePartPaymentAccepted']")
+    private WebElementFacade checkHeadWisePartPayment;
+
+    @FindBy(xpath = "//label[@for='ExamFeeMandatory']")
+    private WebElementFacade checkExamFeeMandatory;
+
+    @FindBy(xpath = "//label[@for='IsSupplimentaryFeeCheckBoxAccepted']")
+    private WebElementFacade checkSupplyFeeMandatory;
+
+    @FindBy(xpath = "//label[@for='PreviousYearMandatory']")
+    private WebElementFacade checkPreviousSemMandatory;
+
+    @FindBy(xpath = "//label[@for='MaintainStudentData']")
+    private WebElementFacade checkMaintainStudentData;
+
+    @FindBy(xpath = "//label[@for='AllowPayDirect']")
+    private WebElementFacade checkAllowPayDirect;
+
     private OrganizationData data;
     private WebDriverWait wait;
+    boolean checkPartPay, checkBoxAccept, headPartPay, examFeeMand, supplyMand, prevSemMand, maintainStuData, allowPayDir;
 
     public void navigateToAddOrganizationForm() {
         clickOn(tab_Admin);
@@ -213,7 +242,7 @@ public class AddOrganizationPage extends PageObject {
             clickOn(btn_OK);
         } else {
             data = new OrganizationData().generateOrgDetails();
-            organizationPage(data.getOrg_Title(), data.getOrg_Description(), data.getOrg_Logo(), data.getOrg_Address1(), data.getOrg_Address2(),
+            organizationPage(false,data.getOrg_Title(), data.getOrg_Description(), data.getOrg_Logo(), data.getOrg_Address1(), data.getOrg_Address2(),
                     data.getOrg_Location(), data.getOrg_City(), data.getOrg_PostalCode(), data.getOrg_ContactName(), data.getOrg_ContactNumber());
             waitForElement(btn_Submit);
             clickOn(btn_Submit);
@@ -229,8 +258,13 @@ public class AddOrganizationPage extends PageObject {
         typeInto(organization_Description, org_Description);
         if (schoolTrue) {
             isSchoolCheckBox.click();
+            school_Logo.sendKeys(FILE_LOGO);
+            manageSchoolProperties(checkPartPay=true, checkBoxAccept=true, headPartPay=true, examFeeMand=true,
+                    supplyMand=true, prevSemMand=true, maintainStuData=true, allowPayDir=true);
+        }else {
+            System.out.println("Creating only Organization");
         }
-        school_Logo.sendKeys(FILE_LOGO);
+
         typeInto(Address_line1, address1);
         //  typeInto(Address_line2, address2);
         typeInto(Location, location);
@@ -267,7 +301,6 @@ public class AddOrganizationPage extends PageObject {
     }
 
     public void verifyPostalCode_PhoneNumberFields() {
-
         postal_Code.typeAndTab(".><dsg?./");
         String actualMsgOnlyDigits = postalCode_Validation.getText();
         String expectedMsgOnlyDigits = "Please enter only digits.";
@@ -467,7 +500,136 @@ public class AddOrganizationPage extends PageObject {
         }
     }
 
-    public void sortUserBySerialNumber(){
 
+    public void manageSchoolProperties(boolean checkPartPay, boolean checkBoxAccept, boolean headPartPay,
+                                       boolean examFeeMand, boolean supplyMand, boolean prevSemMand, boolean maintainStuData,
+                                       boolean allowPayDir) {
+        if (checkPartPay) {
+            if (isCheckBoxEnabled("IsPartPaymentAccepted")) {
+                System.out.println("Part Payment already enabled");
+                typeInto(partPayPercent, "10");
+            } else {
+                clickOn(checkPartPayment);
+                typeInto(partPayPercent, "10");
+                System.out.println("Part Payment enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsPartPaymentAccepted")) {
+                clickOn(checkPartPayment);
+                System.out.println("Part Payment disabled");
+            } else {
+                System.out.println("Part Payment already disabled");
+            }
+        }
+        if (checkBoxAccept) {
+            if (isCheckBoxEnabled("IsChequeBoxesAccepted")) {
+                System.out.println("Check Box Accept already enabled");
+            } else {
+                clickOn(checkCheckBoxAccept);
+                System.out.println("Check Box Accept enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsChequeBoxesAccepted")) {
+                clickOn(checkCheckBoxAccept);
+                System.out.println("Check Box Accept disabled");
+            } else {
+                System.out.println("Check Box Accept already disabled");
+            }
+        }
+        if (headPartPay) {
+            if (isCheckBoxEnabled("IsHeadwisePartPaymentAccepted")) {
+                System.out.println("Head Wise PartPayment already enabled");
+            } else {
+                clickOn(checkHeadWisePartPayment);
+                System.out.println("Head Wise PartPayment enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsHeadwisePartPaymentAccepted")) {
+                clickOn(checkHeadWisePartPayment);
+                System.out.println("Head Wise PartPayment disabled");
+            } else {
+                System.out.println("Head Wise PartPayment already disabled");
+            }
+        }
+        if (examFeeMand) {
+            if (isCheckBoxEnabled("ExamFeeMandatory")) {
+                System.out.println("Exam Fee Mandatory already enabled");
+            } else {
+                clickOn(checkExamFeeMandatory);
+                System.out.println("ExamFee Mandatory enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("ExamFeeMandatory")) {
+                clickOn(checkExamFeeMandatory);
+                System.out.println("ExamFee Mandatory disabled");
+            } else {
+                System.out.println("ExamFee Mandatory already disabled");
+            }
+        }
+        if (supplyMand) {
+            if (isCheckBoxEnabled("IsSupplimentaryFeeCheckBoxAccepted")) {
+                System.out.println("Supplementary Fee already enabled");
+            } else {
+                clickOn(checkSupplyFeeMandatory);
+                System.out.println("Supplementary Fee enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("IsSupplimentaryFeeCheckBoxAccepted")) {
+                clickOn(checkSupplyFeeMandatory);
+                System.out.println("Supplementary Fee disabled");
+            } else {
+                System.out.println("Supplementary Fee already disabled");
+            }
+        }
+        if (prevSemMand) {
+            if (isCheckBoxEnabled("PreviousYearMandatory")) {
+                System.out.println("Previous Semester Mandatory  already enabled");
+            } else {
+                clickOn(checkPreviousSemMandatory);
+                System.out.println("Previous Semester Mandatory enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("PreviousYearMandatory")) {
+                clickOn(checkPreviousSemMandatory);
+                System.out.println("Previous Semester Mandatory disabled");
+            } else {
+                System.out.println("Previous Semester Mandatory already disabled");
+            }
+        }
+        if (maintainStuData) {
+            if (isCheckBoxEnabled("MaintainStudentData")) {
+                System.out.println("Maintain StudentData already enabled");
+            } else {
+                clickOn(checkMaintainStudentData);
+                System.out.println("Maintain StudentData enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("MaintainStudentData")) {
+                clickOn(checkMaintainStudentData);
+                System.out.println("Maintain StudentData disabled");
+            } else {
+                System.out.println("Maintain StudentData already disabled");
+            }
+        }
+        if (allowPayDir) {
+            if (isCheckBoxEnabled("AllowPayDirect")) {
+                System.out.println("Allow PayDirect already enabled");
+            } else {
+                clickOn(checkAllowPayDirect);
+                System.out.println("AllowPay Direct enabled");
+            }
+        } else {
+            if (isCheckBoxEnabled("AllowPayDirect")) {
+                clickOn(checkAllowPayDirect);
+                System.out.println("AllowPay Direct disabled");
+            } else {
+                System.out.println("Allow PayDirect already disabled");
+            }
+        }
+
+    }
+
+    public boolean isCheckBoxEnabled(String checkBoxId) {
+        return getDriver().findElement(By.id(checkBoxId)).isSelected();
     }
 }

@@ -31,11 +31,6 @@ public class AddOrganizationSteps {
         organizationPage.verifyOrganizationAndSchoolCreated();
     }
 
-    @Step("This step will verify organization Create")
-    public void verifyOrganizationCreate() {
-        organizationPage.verifyOrganizationCreated();
-    }
-
     @Step("This step will verify organization Create WithoutMandatoryFields and Validations")
     public void verifyOrganizationCreateWithoutMandatoryFields() {
         organizationPage.createOrganizationNonMandatoryFields();
